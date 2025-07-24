@@ -18,6 +18,7 @@
   color: #2c3e35;
   margin-bottom: 16rpx;
   text-shadow: 2px 2px 4px rgba(139, 115, 85, 0.2);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
 }
 
 .header-subtitle {

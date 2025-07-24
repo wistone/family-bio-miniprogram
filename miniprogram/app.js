@@ -87,9 +87,13 @@ App({
       });
     }
 
+
+
     // 获取用户信息
     this.getSetting();
   },
+
+
 
   getSetting() {
     wx.getSetting({

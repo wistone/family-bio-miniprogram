@@ -9,6 +9,7 @@ Page({
     hasMore: true, // 是否还有更多章节
     scrollIntoView: '', // 滚动到指定元素
     showChapterPopup: false, // 是否显示章节选择弹窗
+    useCalligraphyStyle: true, // 是否使用书法风格 (温润古韵)
     
     // 优化配置 - 预加载所有章节以提升性能
     visibleCount: 50, // 一次加载的章节数量（足够大以加载所有章节）
@@ -177,6 +178,8 @@ Page({
       showChapterPopup: false
     });
   },
+
+
 
   onUnload() {
     console.log('Reading page unload');

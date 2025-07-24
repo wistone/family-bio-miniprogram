@@ -1,5 +1,7 @@
 <view class="reading-container ink-paper">
-  <!-- 虚拟列表容器 -->
+  
+
+  <!-- 主要内容滚动区域 -->
   <scroll-view 
     class="content-scroll"
     scroll-y="{{true}}"
@@ -26,7 +28,7 @@
           
           <!-- 章节内容 -->
           <view class="chapter-content">
-            <view class="chapter-text ink-text">{{item.content}}</view>
+            <view class="chapter-text ink-text {{useCalligraphyStyle ? 'calligraphy-style' : ''}}">{{item.content}}</view>
           </view>
           
           <!-- 章节分隔 -->

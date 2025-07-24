@@ -1,7 +1,7 @@
 /* 全局样式 - 水墨风格 */
 page {
   background: linear-gradient(135deg, #f8f4e6 0%, #ede4d3 50%, #e6dcc7 100%);
-  font-family: 'SimKai', 'KaiTi', serif;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
   color: #2c3e35;
 }
 

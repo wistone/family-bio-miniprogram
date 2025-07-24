@@ -77,6 +77,7 @@
   margin-bottom: 40rpx;
   text-shadow: 2px 2px 4px rgba(139, 115, 85, 0.2);
   letter-spacing: 8rpx;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
 }
 
 .title-decoration {
