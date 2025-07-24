@@ -39,14 +39,24 @@ Page({
         throw new Error('章节数据为空');
       }
       
+      // 处理章节数据，将content分割成段落
+      const processedChapters = chaptersData.map(chapter => {
+        const paragraphs = chapter.content.split('\n\n').filter(p => p.trim());
+        console.log(`Chapter ${chapter.id} paragraphs:`, paragraphs.length);
+        return {
+          ...chapter,
+          paragraphs: paragraphs
+        };
+      });
+      
       this.setData({
-        allChapters: chaptersData,
-        totalChapters: chaptersData.length,
-        visibleChapters: chaptersData, // 直接加载所有章节
+        allChapters: processedChapters,
+        totalChapters: processedChapters.length,
+        visibleChapters: processedChapters, // 直接加载所有章节
         hasMore: false // 已加载完所有章节
       });
       
-      console.log('Chapters loaded:', chaptersData.length);
+      console.log('Chapters loaded:', processedChapters.length);
     } catch (error) {
       console.error('Failed to load chapters:', error);
       wx.showToast({

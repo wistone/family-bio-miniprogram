@@ -70,7 +70,6 @@
   font-size: 30rpx;
   line-height: 1.8;
   color: #2c3e35;
-  text-indent: 2em;
   text-align: justify;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -81,6 +80,19 @@
   font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
   font-weight: 400;
   letter-spacing: 1rpx;
+}
+
+/* 段落样式 - 每个段落都有首行缩进 */
+.paragraph {
+  text-indent: 2em;
+  margin-bottom: 1em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
 }
 
 /* 书法风格增强选项 */
@@ -319,10 +331,13 @@
   
   .chapter-text {
     font-size: 28rpx;
-    text-indent: 1.5em;
     font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
     font-weight: 400;
     letter-spacing: 1rpx;
+  }
+  
+  .paragraph {
+    text-indent: 1.5em;
   }
   
   .floating-nav {

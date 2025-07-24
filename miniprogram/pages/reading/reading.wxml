@@ -28,7 +28,11 @@
           
           <!-- 章节内容 -->
           <view class="chapter-content">
-            <view class="chapter-text ink-text {{useCalligraphyStyle ? 'calligraphy-style' : ''}}">{{item.content}}</view>
+            <view class="chapter-text ink-text {{useCalligraphyStyle ? 'calligraphy-style' : ''}}">
+              <block wx:for="{{item.paragraphs}}" wx:key="index" wx:for-item="paragraph">
+                <view class="paragraph">{{paragraph}}</view>
+              </block>
+            </view>
           </view>
           
           <!-- 章节分隔 -->
