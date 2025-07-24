@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父親母親一大家</title>
+    <script src="chapters-data.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'KaiTi', '楷体', serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 30%, #dee2e6 100%);
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 30px rgba(52, 73, 94, 0.15);
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #607d8b 0%, #455a64 100%);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 3px solid #37474f;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 15px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        /* 右侧主内容区 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 标题栏 */
+        .header {
+            background: linear-gradient(90deg, #34495e 0%, #2c3e50 50%, #34495e 100%);
+            color: #ecf0f1;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            line-height: 1.2;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
+        }
+
+        /* 内容区 */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(0deg, rgba(236, 240, 241, 0.8) 0%, rgba(255, 255, 255, 0.95) 100%);
+            background: radial-gradient(circle, rgba(120, 144, 156, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .content-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(52, 73, 94, 0.12);
+            border: 1px solid #b0bec5;
+        }
+
+        .chapter-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid #607d8b;
+            padding-bottom: 10px;
+        }
+
+        .chapter-content {
+            font-size: 16px;
+            text-indent: 2em;
+            line-height: 2;
+            color: #2c2c2c;
+        }
+
+        .chapter-content p {
+            margin-bottom: 20px;
+        }
+
+        .chapter-section {
+            margin-bottom: 20px;
+            scroll-margin-top: 20px;
+        }
+
+        .chapter-section:last-child {
+            margin-bottom: 0;
+        }
+
+
+
+        .hidden { display: none; }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                order: 2;
+            }
+
+            .main-content {
+                order: 1;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .content-inner {
+                padding: 20px;
+            }
+
+
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #90a4ae;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #607d8b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <h2>目录</h2>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter1')">序言</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter2')">一.记忆中的爷爷奶奶</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter3')">二.父亲的童年</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter4')">三.父亲的婚姻</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter5')">四.岳父门上安家</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter6')">五.白手起家的父亲</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter7')">六.母亲的娘家</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter8')">七.外住户的悲惨</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter9')">八.定居下阳阁村</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter10')">九.乐善好施的母亲</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter11')">十.多灾多难的父亲</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter12')">十一.兴旺的门庭</a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="showChapter('chapter13')">后记</a>
+            </div>
+        </div>
+
+        <!-- 右侧主内容区 -->
+        <div class="main-content">
+            <!-- 标题栏 -->
+            <div class="header">
+                <h1>父親母親一大家</h1>
+            </div>
+
+
+
+            <!-- 内容区 -->
+            <div class="content">
+                <div class="content-inner" id="contentArea">
+                    <div id="chapters-container">
+                        <!-- 章节内容将由JavaScript动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChapter = 'chapter1';
+        let allChapters = [];
+
+
+
+        // 加载所有章节内容到页面上（实现连续滚动）
+        function loadAllChapters() {
+            const container = document.getElementById('chapters-container');
+            let allContent = '';
+            
+            allChapters.forEach((chapterId, index) => {
+                const chapter = chaptersData[chapterId];
+                if (chapter) {
+                    // 先按双换行分割，再按单换行分割并用<br>处理
+                    const paragraphs = chapter.content.split('\n\n').filter(p => p.trim());
+                    const paragraphsHtml = paragraphs.map(p => {
+                        // 将段落内的单换行转换为<br>标签
+                        const processedP = p.trim().replace(/\n/g, '<br>');
+                        return `<p>${processedP}</p>`;
+                    }).join('');
+                    
+                    allContent += `
+                        <div class="chapter-section" id="${chapterId}-section" data-chapter="${chapterId}">
+                            <h2 class="chapter-title">${chapter.title}</h2>
+                            <div class="chapter-content">
+                                ${paragraphsHtml}
+                            </div>
+                            ${index < allChapters.length - 1 ? '<div style="height: 20px;"></div>' : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            container.innerHTML = allContent;
+        }
+
+        // 加载单个章节内容
+        function loadChapterContent() {
+            const chapter = chaptersData[currentChapter];
+            if (chapter) {
+                const container = document.getElementById('chapters-container');
+                const paragraphs = chapter.content.split('\n\n').filter(p => p.trim());
+                const paragraphsHtml = paragraphs.map(p => {
+                    const processedP = p.trim().replace(/\n/g, '<br>');
+                    return `<p>${processedP}</p>`;
+                }).join('');
+                
+                container.innerHTML = `
+                    <h2 class="chapter-title">${chapter.title}</h2>
+                    <div class="chapter-content">
+                        ${paragraphsHtml}
+                    </div>
+                `;
+            }
+        }
+
+        // 切换到连续滚动模式
+        function enableContinuousScroll() {
+            loadAllChapters();
+            setupScrollListener();
+        }
+
+        // 设置滚动监听
+        function setupScrollListener() {
+            const contentArea = document.querySelector('.content');
+            const sections = document.querySelectorAll('.chapter-section');
+            
+            contentArea.addEventListener('scroll', function() {
+                let currentSection = null;
+                const scrollTop = contentArea.scrollTop + 200; // 提前切换时机
+                const contentHeight = contentArea.scrollHeight;
+                const viewportHeight = contentArea.clientHeight;
+                const scrollBottom = contentArea.scrollTop + viewportHeight;
+                
+                // 特殊处理：如果滚动到底部附近，激活最后一个章节
+                if (scrollBottom >= contentHeight - 100) {
+                    const lastSection = sections[sections.length - 1];
+                    currentSection = lastSection.getAttribute('data-chapter');
+                } else {
+                    // 正常的章节检测逻辑
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.offsetHeight;
+                        
+                        // 当滚动到章节开始位置前50px时就激活
+                        if (scrollTop >= sectionTop - 50 && scrollTop < sectionTop + sectionHeight) {
+                            currentSection = section.getAttribute('data-chapter');
+                        }
+                    });
+                }
+                
+                if (currentSection && currentSection !== currentChapter) {
+                    currentChapter = currentSection;
+                    // 更新导航栏激活状态
+                    updateActiveNavLink(currentChapter);
+                }
+            });
+        }
+
+        // 更新导航栏激活状态
+        function updateActiveNavLink(chapterId) {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // 精确匹配章节ID，避免误匹配
+                const onclickAttr = link.getAttribute('onclick');
+                if (onclickAttr === `showChapter('${chapterId}')`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 跳转到指定章节（在连续滚动模式下）
+        function scrollToChapter(chapterId) {
+            const section = document.getElementById(chapterId + '-section');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 显示章节（支持连续滚动）
+        function showChapter(chapterId) {
+            currentChapter = chapterId;
+            
+            // 检查是否已经是连续滚动模式
+            if (document.querySelector('.chapter-section')) {
+                scrollToChapter(chapterId);
+            } else {
+                loadChapterContent();
+                // 滚动到顶部
+                document.querySelector('.content').scrollTop = 0;
+            }
+
+            // 更新导航栏状态
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化章节列表
+            allChapters = Object.keys(chaptersData);
+            
+            // 启用连续滚动模式
+            enableContinuousScroll();
+            
+            // 确保只有第一个章节是活跃状态
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // 设置初始活跃章节为序言
+            updateActiveNavLink('chapter1');
+        });
+
+        // 键盘快捷键支持（章节导航）
+        document.addEventListener('keydown', function(event) {
+            const currentIndex = allChapters.indexOf(currentChapter);
+            
+            if (event.key === 'ArrowUp' && event.ctrlKey) {
+                event.preventDefault();
+                if (currentIndex > 0) {
+                    const prevChapter = allChapters[currentIndex - 1];
+                    scrollToChapter(prevChapter);
+                }
+            } else if (event.key === 'ArrowDown' && event.ctrlKey) {
+                event.preventDefault();
+                if (currentIndex < allChapters.length - 1) {
+                    const nextChapter = allChapters[currentIndex + 1];
+                    scrollToChapter(nextChapter);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
