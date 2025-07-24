@@ -7,7 +7,7 @@ Page({
     currentChapterIndex: 0, // 当前章节索引
     totalChapters: 0, // 总章节数
     hasMore: true, // 是否还有更多章节
-    scrollIntoView: '', // 滚动到指定元素
+    scrollTop: 0, // 滚动位置
     showChapterPopup: false, // 是否显示章节选择弹窗
     useCalligraphyStyle: true, // 是否使用书法风格 (温润古韵)
     
@@ -101,11 +101,34 @@ Page({
   jumpToChapterById(chapterId) {
     const chapterIndex = this.data.allChapters.findIndex(chapter => chapter.id === chapterId);
     if (chapterIndex !== -1) {
-      // 所有章节已预加载，直接滚动到目标章节
       this.setData({
-        scrollIntoView: `chapter-${chapterId}`,
         currentChapterIndex: chapterIndex
       });
+      
+      // 使用query获取章节位置，然后滚动到该位置并留出顶部间距
+      setTimeout(() => {
+        const query = wx.createSelectorQuery().in(this);
+        // 获取章节相对于scroll-view的位置
+        query.select(`#chapter-${chapterId}`).boundingClientRect();
+        query.select('.content-scroll').boundingClientRect();
+        query.select('.content-scroll').scrollOffset();
+        query.exec((res) => {
+          if (res[0] && res[1] && res[2]) {
+            const chapterRect = res[0];
+            const scrollViewRect = res[1]; 
+            const scrollOffset = res[2];
+            
+            // 计算章节相对于scroll-view内容的位置
+            const chapterOffsetInScrollView = chapterRect.top - scrollViewRect.top + scrollOffset.scrollTop;
+            // 减去30px的顶部间距
+            const targetScrollTop = chapterOffsetInScrollView - 10;
+            
+            this.setData({
+              scrollTop: Math.max(0, targetScrollTop)
+            });
+          }
+        });
+      }, 100);
     }
   },
 
