@@ -18,9 +18,6 @@ Page({
   onLoad(options) {
     console.log('Reading page loaded with options:', options);
     
-    // 显示tabBar
-    wx.showTabBar();
-    
     // 加载章节数据
     this.loadChapterData();
     
@@ -162,8 +159,16 @@ Page({
   },
 
   onShow() {
-    // 显示tabBar
+    // 显示TabBar
     wx.showTabBar();
+    
+    // 检查是否有通过全局数据传递的章节ID
+    const app = getApp();
+    if (app.globalData.selectedChapterId) {
+      const chapterId = app.globalData.selectedChapterId;
+      app.globalData.selectedChapterId = null; // 清除标记
+      this.jumpToChapterById(chapterId);
+    }
   },
 
   onHide() {

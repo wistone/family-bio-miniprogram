@@ -50,8 +50,8 @@ Page({
       type: 'light'
     });
 
-    // 跳转到阅读页面
-    wx.navigateTo({
+    // 跳转到阅读页面（TabBar页面）
+    wx.switchTab({
       url: '/pages/reading/reading',
       success: () => {
         console.log('Navigate to reading page');

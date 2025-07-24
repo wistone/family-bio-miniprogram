@@ -15,21 +15,27 @@
   "tabBar": {
     "list": [
       {
+        "pagePath": "pages/reading/reading",
+        "text": "阅读",
+        "iconPath": "assets/tab-reading.png",
+        "selectedIconPath": "assets/tab-reading-sel.png"
+      },
+      {
         "pagePath": "pages/catalog/catalog",
-        "text": "阅读目录",
+        "text": "目录",
         "iconPath": "assets/tab-catalog.png",
         "selectedIconPath": "assets/tab-catalog-sel.png"
       },
       {
-        "pagePath": "pages/feedback/feedback",
-        "text": "亲友反馈",
+        "pagePath": "pages/feedback/feedback", 
+        "text": "反馈",
         "iconPath": "assets/tab-like.png",
         "selectedIconPath": "assets/tab-like-sel.png"
       }
     ],
-    "color": "#888888",
-    "selectedColor": "#c0a16b",
-    "backgroundColor": "#ffffff",
+    "color": "#666666",
+    "selectedColor": "#8b7355",
+    "backgroundColor": "#f5f1e8",
     "borderStyle": "white"
   },
   "cloud": true,

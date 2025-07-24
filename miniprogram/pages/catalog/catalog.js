@@ -82,10 +82,21 @@ Page({
     });
     
     // 跳转到阅读页面，并传递章节ID
-    wx.navigateTo({
-      url: `/pages/reading/reading?chapterId=${chapterId}`,
+    // 由于reading页面现在是TabBar页面，需要先切换然后传递参数
+    wx.switchTab({
+      url: '/pages/reading/reading',
       success: () => {
         console.log('Navigate to reading page with chapter:', chapterId);
+        // 通过全局数据传递章节ID
+        const app = getApp();
+        app.globalData.selectedChapterId = chapterId;
+        
+        // 触发reading页面的章节跳转
+        const pages = getCurrentPages();
+        const readingPage = pages.find(page => page.route === 'pages/reading/reading');
+        if (readingPage && readingPage.jumpToChapterById) {
+          readingPage.jumpToChapterById(chapterId);
+        }
       },
       fail: (error) => {
         console.error('Failed to navigate to reading page:', error);
