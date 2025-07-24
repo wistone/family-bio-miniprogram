@@ -1,0 +1,336 @@
+/* 反馈页样式 - 水墨风格 */
+.feedback-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f4e6 0%, #ede4d3 50%, #e6dcc7 100%);
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+}
+
+/* 页面头部 */
+.feedback-header {
+  text-align: center;
+  padding: 40rpx 20rpx 60rpx;
+  margin-bottom: 30rpx;
+}
+
+.header-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #2c3e35;
+  margin-bottom: 16rpx;
+  text-shadow: 2px 2px 4px rgba(139, 115, 85, 0.2);
+}
+
+.header-subtitle {
+  font-size: 28rpx;
+  color: #8b7355;
+  opacity: 0.8;
+  margin-bottom: 40rpx;
+}
+
+/* 点赞区域 */
+.like-section {
+  margin-bottom: 40rpx;
+  padding: 50rpx 40rpx;
+  text-align: center;
+  border-radius: 20rpx;
+}
+
+.like-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+
+.like-icon-wrapper {
+  position: relative;
+  margin-right: 30rpx;
+  cursor: pointer;
+}
+
+.like-icon {
+  font-size: 80rpx;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.like-icon.liked {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+.like-animation {
+  position: absolute;
+  top: -20rpx;
+  right: -10rpx;
+  font-size: 32rpx;
+  color: #ff6b6b;
+  font-weight: bold;
+  opacity: 0;
+  transform: translateY(0);
+  transition: all 0.6s ease;
+}
+
+.like-animation.show {
+  opacity: 1;
+  transform: translateY(-40rpx);
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.3); }
+  40% { transform: scale(1.1); }
+  60% { transform: scale(1.25); }
+  80% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.like-info {
+  text-align: left;
+}
+
+.like-count {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #c0a16b;
+  line-height: 1;
+}
+
+.like-text {
+  font-size: 28rpx;
+  color: #8b7355;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+
+.like-description {
+  font-size: 26rpx;
+  color: #8b7355;
+  opacity: 0.7;
+  line-height: 1.5;
+}
+
+/* 评论输入区域 */
+.comment-input-section {
+  margin-bottom: 40rpx;
+  padding: 40rpx;
+  border-radius: 20rpx;
+}
+
+.input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.input-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2c3e35;
+}
+
+.input-count {
+  font-size: 24rpx;
+  color: #8b7355;
+  opacity: 0.7;
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 30rpx;
+  background: rgba(248, 244, 230, 0.5);
+  border: 2rpx solid rgba(139, 115, 85, 0.2);
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #2c3e35;
+  box-sizing: border-box;
+}
+
+.comment-textarea::placeholder {
+  color: #8b7355;
+  opacity: 0.5;
+}
+
+.input-actions {
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-button {
+  width: 200rpx;
+  height: 70rpx;
+  border-radius: 35rpx;
+  font-size: 28rpx;
+}
+
+.submit-button.disabled {
+  opacity: 0.5;
+  background: #ccc !important;
+}
+
+.submit-button::after {
+  border: none;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.button-text {
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin-right: 8rpx;
+}
+
+.button-icon {
+  font-size: 28rpx;
+}
+
+/* 评论区域 */
+.comments-section {
+  margin-top: 20rpx;
+}
+
+.comments-header {
+  padding: 20rpx 10rpx 30rpx;
+}
+
+.comments-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #2c3e35;
+}
+
+/* 评论列表 */
+.comments-list {
+  /* 评论列表样式 */
+}
+
+.comment-item {
+  display: flex;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 16rpx;
+}
+
+.comment-avatar {
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.avatar-image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  background: #f0f0f0;
+}
+
+.comment-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.comment-nickname {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2c3e35;
+  margin-right: 20rpx;
+}
+
+.comment-time {
+  font-size: 24rpx;
+  color: #8b7355;
+  opacity: 0.7;
+}
+
+.comment-text {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #2c3e35;
+  word-wrap: break-word;
+}
+
+/* 空状态 */
+.empty-comments {
+  text-align: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  opacity: 0.3;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #8b7355;
+  opacity: 0.7;
+}
+
+/* 加载状态 */
+.loading-comments {
+  text-align: center;
+  padding: 60rpx 40rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #8b7355;
+  opacity: 0.7;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 40rpx;
+  margin-top: 20rpx;
+}
+
+.load-more-text {
+  font-size: 28rpx;
+  color: #c0a16b;
+  padding: 20rpx 40rpx;
+  border: 2rpx solid rgba(192, 161, 107, 0.3);
+  border-radius: 40rpx;
+  background: rgba(192, 161, 107, 0.1);
+  transition: all 0.3s ease;
+}
+
+.load-more:active .load-more-text {
+  background: rgba(192, 161, 107, 0.2);
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 750rpx) {
+  .header-title {
+    font-size: 44rpx;
+  }
+  
+  .like-icon {
+    font-size: 70rpx;
+  }
+  
+  .like-count {
+    font-size: 42rpx;
+  }
+  
+  .comment-textarea {
+    min-height: 180rpx;
+    font-size: 26rpx;
+  }
+}

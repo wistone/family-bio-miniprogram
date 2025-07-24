@@ -1,0 +1,51 @@
+<view class="catalog-container ink-paper">
+  <!-- 页面标题 -->
+  <view class="catalog-header">
+    <view class="header-title ink-title">阅读目录</view>
+    <view class="header-subtitle">父親母親一大家</view>
+    <view class="ink-divider"></view>
+  </view>
+  
+  <!-- 章节目录列表 -->
+  <scroll-view class="catalog-scroll" scroll-y="{{true}}" enhanced="{{true}}">
+    <view class="catalog-list">
+      <block wx:for="{{chapters}}" wx:key="id">
+        <view 
+          class="catalog-item content-container"
+          bindtap="navigateToChapter"
+          data-chapter-id="{{item.id}}"
+        >
+          <!-- 章节编号 -->
+          <view class="item-number">
+            <view class="number-circle">{{item.id}}</view>
+          </view>
+          
+          <!-- 章节信息 -->
+          <view class="item-content">
+            <view class="item-title">第 {{item.id}} 章 · {{item.title}}</view>
+            <view class="item-preview">{{item.preview}}</view>
+            <view class="item-meta">
+              <view class="meta-length">约 {{item.wordCount}} 字</view>
+              <view class="meta-time">阅读时间 {{item.readTime}} 分钟</view>
+            </view>
+          </view>
+          
+          <!-- 箭头指示器 -->
+          <view class="item-arrow">
+            <view class="arrow-icon">→</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <!-- 底部提示 -->
+    <view class="catalog-footer">
+      <view class="footer-text">
+        共 {{chapters.length}} 章节
+      </view>
+      <view class="footer-decoration">
+        <view class="decoration-flower">🌸</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

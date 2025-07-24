@@ -1,0 +1,102 @@
+<view class="feedback-container ink-paper">
+  <!-- 页面头部 -->
+  <view class="feedback-header">
+    <view class="header-title ink-title">亲友反馈</view>
+    <view class="header-subtitle">分享您的感想与回忆</view>
+    <view class="ink-divider"></view>
+  </view>
+  
+  <!-- 点赞区域 -->
+  <view class="like-section content-container">
+    <view class="like-content">
+      <view class="like-icon-wrapper" bindtap="handleLike">
+        <view class="like-icon {{liked ? 'liked' : ''}}">❤️</view>
+        <view class="like-animation {{showLikeAnimation ? 'show' : ''}}">+1</view>
+      </view>
+      <view class="like-info">
+        <view class="like-count">{{likeCount}}</view>
+        <view class="like-text">位亲友点赞</view>
+      </view>
+    </view>
+    <view class="like-description">
+      如果这个家族故事触动了您的心，请点击爱心表达支持
+    </view>
+  </view>
+  
+  <!-- 评论输入区域 -->
+  <view class="comment-input-section content-container">
+    <view class="input-header">
+      <view class="input-title">留言分享</view>
+      <view class="input-count">{{commentText.length}}/200</view>
+    </view>
+    <textarea 
+      class="comment-textarea"
+      placeholder="分享您的感想、回忆或补充信息..."
+      maxlength="200"
+      value="{{commentText}}"
+      bindinput="onCommentInput"
+      show-confirm-bar="{{false}}"
+      cursor-spacing="20"
+    ></textarea>
+    <view class="input-actions">
+      <button 
+        class="submit-button ink-button {{commentText.trim().length > 0 ? '' : 'disabled'}}"
+        bindtap="submitComment"
+        disabled="{{commentText.trim().length === 0 || submitting}}"
+      >
+        <view class="button-content">
+          <view class="button-text">{{submitting ? '提交中...' : '发布留言'}}</view>
+          <view class="button-icon" wx:if="{{!submitting}}">📝</view>
+        </view>
+      </button>
+    </view>
+  </view>
+  
+  <!-- 评论列表 -->
+  <view class="comments-section">
+    <view class="comments-header">
+      <view class="comments-title">亲友留言 ({{comments.length}})</view>
+    </view>
+    
+    <!-- 评论列表 -->
+    <view class="comments-list" wx:if="{{comments.length > 0}}">
+      <block wx:for="{{comments}}" wx:key="id">
+        <view class="comment-item content-container">
+          <!-- 用户头像 -->
+          <view class="comment-avatar">
+            <image 
+              class="avatar-image" 
+              src="{{item.avatarUrl || '/assets/default-avatar.png'}}"
+              mode="aspectFill"
+            ></image>
+          </view>
+          
+          <!-- 评论内容 -->
+          <view class="comment-content">
+            <view class="comment-header">
+              <view class="comment-nickname">{{item.nickName || '匿名用户'}}</view>
+              <view class="comment-time">{{item.createTime}}</view>
+            </view>
+            <view class="comment-text">{{item.content}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <!-- 空状态 -->
+    <view class="empty-comments" wx:if="{{comments.length === 0 && !loadingComments}}">
+      <view class="empty-icon">💭</view>
+      <view class="empty-text">暂无留言，快来分享您的感想吧</view>
+    </view>
+    
+    <!-- 加载状态 -->
+    <view class="loading-comments" wx:if="{{loadingComments}}">
+      <view class="loading-text">正在加载留言...</view>
+    </view>
+    
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMoreComments && comments.length > 0}}" bindtap="loadMoreComments">
+      <view class="load-more-text">加载更多留言</view>
+    </view>
+  </view>
+</view>

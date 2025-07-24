@@ -1,0 +1,105 @@
+<view class="reading-container ink-paper">
+  <!-- 虚拟列表容器 -->
+  <scroll-view 
+    class="content-scroll"
+    scroll-y="{{true}}"
+    scroll-into-view="{{scrollIntoView}}"
+    scroll-with-animation="{{true}}"
+    bindscroll="onScroll"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+  >
+    <!-- 章节列表 -->
+    <view class="chapters-container">
+      <block wx:for="{{visibleChapters}}" wx:key="id">
+        <view 
+          class="chapter-item content-container" 
+          id="chapter-{{item.id}}"
+          data-chapter-id="{{item.id}}"
+        >
+          <!-- 章节标题 -->
+          <view class="chapter-header">
+            <view class="chapter-number">第 {{item.id}} 章</view>
+            <view class="chapter-title ink-title">{{item.title}}</view>
+            <view class="ink-divider"></view>
+          </view>
+          
+          <!-- 章节内容 -->
+          <view class="chapter-content">
+            <view class="chapter-text ink-text">{{item.content}}</view>
+          </view>
+          
+          <!-- 章节分隔 -->
+          <view class="chapter-separator" wx:if="{{index < visibleChapters.length - 1}}">
+            <view class="separator-decoration">
+              <view class="separator-dot"></view>
+              <view class="separator-dot"></view>
+              <view class="separator-dot"></view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <!-- 加载更多指示器 -->
+    <view class="loading-more" wx:if="{{hasMore}}">
+      <view class="loading-text">加载更多章节...</view>
+    </view>
+    
+    <!-- 结束指示器 -->
+    <view class="reading-end" wx:if="{{!hasMore}}">
+      <view class="end-decoration">
+        <view class="end-text">全文完</view>
+        <view class="end-seal">🏮</view>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 浮动导航按钮 -->
+  <view class="floating-nav">
+    <!-- 上一章按钮 -->
+    <view 
+      class="nav-button nav-prev {{currentChapterIndex <= 0 ? 'disabled' : ''}}"
+      bindtap="gotoPrevChapter"
+    >
+      <view class="nav-icon">⬆</view>
+      <view class="nav-text">上一章</view>
+    </view>
+    
+    <!-- 当前章节指示器 -->
+    <view class="chapter-indicator" bindtap="showChapterList">
+      <view class="indicator-text">{{currentChapterIndex + 1}}/{{totalChapters}}</view>
+    </view>
+    
+    <!-- 下一章按钮 -->
+    <view 
+      class="nav-button nav-next {{currentChapterIndex >= totalChapters - 1 ? 'disabled' : ''}}"
+      bindtap="gotoNextChapter"
+    >
+      <view class="nav-icon">⬇</view>
+      <view class="nav-text">下一章</view>
+    </view>
+  </view>
+  
+  <!-- 章节选择弹窗 -->
+  <view class="chapter-popup {{showChapterPopup ? 'show' : ''}}" bindtap="hideChapterList">
+    <view class="popup-content" catchtap="stopPropagation">
+      <view class="popup-header">
+        <view class="popup-title">章节目录</view>
+        <view class="popup-close" bindtap="hideChapterList">✕</view>
+      </view>
+      <scroll-view class="popup-list" scroll-y="{{true}}">
+        <view 
+          class="popup-item {{item.id === currentChapterIndex + 1 ? 'active' : ''}}"
+          wx:for="{{allChapters}}" 
+          wx:key="id"
+          bindtap="jumpToChapter"
+          data-chapter-id="{{item.id}}"
+        >
+          <view class="popup-item-number">第{{item.id}}章</view>
+          <view class="popup-item-title">{{item.title}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

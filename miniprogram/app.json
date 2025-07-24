@@ -1,14 +1,40 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/cover/cover",
+    "pages/reading/reading",
+    "pages/catalog/catalog",
+    "pages/feedback/feedback"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#8b7355",
+    "navigationBarTitleText": "父親母親一大家",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f1e8"
   },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/catalog/catalog",
+        "text": "阅读目录",
+        "iconPath": "assets/tab-catalog.png",
+        "selectedIconPath": "assets/tab-catalog-sel.png"
+      },
+      {
+        "pagePath": "pages/feedback/feedback",
+        "text": "亲友反馈",
+        "iconPath": "assets/tab-like.png",
+        "selectedIconPath": "assets/tab-like-sel.png"
+      }
+    ],
+    "color": "#888888",
+    "selectedColor": "#c0a16b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white"
+  },
+  "cloud": true,
   "style": "v2",
   "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"
 }

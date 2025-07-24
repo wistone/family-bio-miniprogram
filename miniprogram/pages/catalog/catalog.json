@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "阅读目录",
+  "navigationBarBackgroundColor": "#8b7355",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f5f1e8",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

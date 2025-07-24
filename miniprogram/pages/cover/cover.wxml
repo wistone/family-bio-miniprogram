@@ -1,0 +1,55 @@
+<view class="cover-container ink-paper">
+  <!-- 背景装饰 -->
+  <view class="ink-bg">
+    <view class="ink-circle ink-circle-1"></view>
+    <view class="ink-circle ink-circle-2"></view>
+    <view class="ink-circle ink-circle-3"></view>
+  </view>
+  
+  <!-- 主要内容 -->
+  <view class="content-wrapper">
+    <!-- 标题区域 -->
+    <view class="title-section">
+      <view class="main-title ink-title">父親母親一大家</view>
+      <view class="title-decoration">
+        <view class="decoration-line"></view>
+        <view class="decoration-dot"></view>
+        <view class="decoration-line"></view>
+      </view>
+    </view>
+    
+    <!-- 副标题区域 -->
+    <view class="subtitle-section">
+      <view class="subtitle-text ink-text">
+        用口述与文字还原父母一生与家族兴衰：
+      </view>
+      <view class="subtitle-text ink-text">
+        从清末商旅、土改风云到新中国奋斗。
+      </view>
+      <view class="subtitle-text ink-text">
+        支持时间线浏览、亲友补充与留言，
+      </view>
+      <view class="subtitle-text ink-text">
+        让记忆被看见、传承可触摸。
+      </view>
+    </view>
+    
+    <!-- 开始阅读按钮 -->
+    <view class="button-section">
+      <button class="start-button ink-button" bindtap="startReading">
+        <view class="button-content">
+          <view class="button-text">开始阅读</view>
+          <view class="button-icon">📖</view>
+        </view>
+      </button>
+    </view>
+    
+    <!-- 底部装饰 -->
+    <view class="bottom-decoration">
+      <view class="ink-seal">
+        <view class="seal-text">家</view>
+        <view class="seal-text">传</view>
+      </view>
+    </view>
+  </view>
+</view>

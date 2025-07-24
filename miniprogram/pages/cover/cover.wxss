@@ -1,0 +1,211 @@
+/* 封面页样式 - 水墨风格 */
+.cover-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f4e6 0%, #ede4d3 50%, #e6dcc7 100%);
+}
+
+/* 水墨背景装饰 */
+.ink-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.ink-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 115, 85, 0.1) 0%, transparent 70%);
+}
+
+.ink-circle-1 {
+  width: 600rpx;
+  height: 600rpx;
+  top: -200rpx;
+  right: -200rpx;
+  animation: float 8s ease-in-out infinite;
+}
+
+.ink-circle-2 {
+  width: 400rpx;
+  height: 400rpx;
+  bottom: -100rpx;
+  left: -100rpx;
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+.ink-circle-3 {
+  width: 300rpx;
+  height: 300rpx;
+  top: 50%;
+  right: -50rpx;
+  animation: float 10s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* 内容容器 */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 600rpx;
+  text-align: center;
+  padding: 60rpx 40rpx;
+}
+
+/* 标题区域 */
+.title-section {
+  margin-bottom: 80rpx;
+}
+
+.main-title {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #2c3e35;
+  margin-bottom: 40rpx;
+  text-shadow: 2px 2px 4px rgba(139, 115, 85, 0.2);
+  letter-spacing: 8rpx;
+}
+
+.title-decoration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40rpx 0;
+}
+
+.decoration-line {
+  width: 80rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.5), transparent);
+}
+
+.decoration-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #c0a16b;
+  margin: 0 20rpx;
+}
+
+/* 副标题区域 */
+.subtitle-section {
+  margin-bottom: 100rpx;
+  padding: 0 20rpx;
+}
+
+.subtitle-text {
+  font-size: 28rpx;
+  line-height: 1.8;
+  color: #5a6c57;
+  margin-bottom: 16rpx;
+  opacity: 0.9;
+}
+
+/* 按钮区域 */
+.button-section {
+  margin-bottom: 80rpx;
+}
+
+.start-button {
+  width: 320rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  background: linear-gradient(145deg, #c0a16b, #8b7355);
+  border: 3rpx solid rgba(139, 115, 85, 0.3);
+  box-shadow: 
+    0 8rpx 24rpx rgba(139, 115, 85, 0.3),
+    inset 0 2rpx 6rpx rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.start-button::after {
+  border: none;
+}
+
+.start-button:active {
+  transform: translateY(4rpx);
+  box-shadow: 
+    0 4rpx 12rpx rgba(139, 115, 85, 0.3),
+    inset 0 2rpx 6rpx rgba(255, 255, 255, 0.2);
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.button-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin-right: 16rpx;
+}
+
+.button-icon {
+  font-size: 32rpx;
+}
+
+/* 底部装饰 */
+.bottom-decoration {
+  display: flex;
+  justify-content: center;
+}
+
+.ink-seal {
+  width: 120rpx;
+  height: 120rpx;
+  background: linear-gradient(145deg, #8b7355, #c0a16b);
+  border: 4rpx solid #2c3e35;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 6rpx 20rpx rgba(139, 115, 85, 0.4),
+    inset 0 2rpx 4rpx rgba(255, 255, 255, 0.1);
+  transform: rotate(-5deg);
+}
+
+.seal-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.seal-text:first-child {
+  margin-bottom: 8rpx;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 750rpx) {
+  .main-title {
+    font-size: 48rpx;
+  }
+  
+  .subtitle-text {
+    font-size: 26rpx;
+  }
+  
+  .button-text {
+    font-size: 28rpx;
+  }
+}
