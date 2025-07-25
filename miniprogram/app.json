@@ -2,7 +2,6 @@
   "pages": [
     "pages/cover/cover",
     "pages/reading/reading",
-    "pages/catalog/catalog",
     "pages/feedback/feedback"
   ],
   "window": {
@@ -19,12 +18,6 @@
         "text": "阅读",
         "iconPath": "assets/tab-reading.png",
         "selectedIconPath": "assets/tab-reading-sel.png"
-      },
-      {
-        "pagePath": "pages/catalog/catalog",
-        "text": "目录",
-        "iconPath": "assets/tab-catalog.png",
-        "selectedIconPath": "assets/tab-catalog-sel.png"
       },
       {
         "pagePath": "pages/feedback/feedback", 

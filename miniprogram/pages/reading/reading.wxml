@@ -113,7 +113,7 @@
     
     <!-- 当前章节指示器 -->
     <view class="chapter-indicator" bindtap="showChapterList">
-      <view class="indicator-text" wx:if="{{allChapters[currentChapterIndex].type === 'cover'}}">封面</view>
+      <view class="indicator-text" wx:if="{{allChapters[currentChapterIndex].type === 'cover'}}">进入目录</view>
       <view class="indicator-text" wx:else>{{currentChapterIndex}}/{{totalChapters - 1}}</view>
     </view>
     

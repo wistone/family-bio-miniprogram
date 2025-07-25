@@ -229,7 +229,8 @@
 
 /* 章节指示器 */
 .chapter-indicator {
-  width: 120rpx;
+  min-width: 120rpx;
+  max-width: 160rpx;
   height: 60rpx;
   border-radius: 30rpx;
   background: rgba(139, 115, 85, 0.9);
@@ -238,12 +239,15 @@
   justify-content: center;
   margin-bottom: 16rpx;
   box-shadow: 0 4rpx 12rpx rgba(139, 115, 85, 0.3);
+  padding: 0 16rpx;
+  box-sizing: border-box;
 }
 
 .indicator-text {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: white;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 /* 章节选择弹窗 */
