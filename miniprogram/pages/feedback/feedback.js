@@ -3,9 +3,10 @@ const app = getApp();
 Page({
   data: {
     // 点赞相关
-    likeCount: 128, // 默认点赞数
+    likeCount: 0, // 初始值，等待从云端加载
     liked: false,
     showLikeAnimation: false,
+    loadingLikeCount: true, // 加载状态
     
     // 评论相关
     commentText: '',
@@ -34,6 +35,10 @@ Page({
 
   // 加载点赞数量
   async loadLikeCount() {
+    this.setData({
+      loadingLikeCount: true
+    });
+    
     try {
       const result = await wx.cloud.callFunction({
         name: 'feedback',
@@ -43,17 +48,24 @@ Page({
       if (result.result.success) {
         this.setData({
           likeCount: result.result.data.likeCount,
-          liked: false // 始终允许点赞
+          liked: false, // 始终允许点赞
+          loadingLikeCount: false
         });
       } else {
         throw new Error(result.result.error);
       }
     } catch (error) {
       console.error('Failed to load like count:', error);
-      // 使用默认值
+      // 不使用默认值，显示加载失败状态
       this.setData({
-        likeCount: 128,
-        liked: false
+        loadingLikeCount: false,
+        likeCount: 0 // 保持为0，表示加载失败
+      });
+      
+      wx.showToast({
+        title: '点赞数加载失败',
+        icon: 'none',
+        duration: 2000
       });
     }
   },

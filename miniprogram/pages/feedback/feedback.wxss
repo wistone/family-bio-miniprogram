@@ -97,6 +97,16 @@
   line-height: 1;
 }
 
+.like-count.loading {
+  opacity: 0.6;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 .like-text {
   font-size: 28rpx;
   color: #8b7355;
