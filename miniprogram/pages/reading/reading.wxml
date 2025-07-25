@@ -15,28 +15,67 @@
     <view class="chapters-container">
       <block wx:for="{{visibleChapters}}" wx:key="id">
         <view 
-          class="chapter-item content-container" 
+          class="chapter-item content-container {{item.type === 'cover' ? 'cover-chapter' : ''}}" 
           id="chapter-{{item.id}}"
           data-chapter-id="{{item.id}}"
         >
-          <!-- 章节标题 -->
-          <view class="chapter-header">
-            <view class="chapter-number">第 {{item.id}} 章</view>
-            <view class="chapter-title ink-title">{{item.title}}</view>
-            <view class="ink-divider"></view>
+          <!-- Cover页面特殊渲染 -->
+          <view wx:if="{{item.type === 'cover'}}" class="cover-content">
+            <!-- 主标题 -->
+            <view class="cover-title">{{item.content}}</view>
+            <view class="cover-title-decoration">
+              <view class="decoration-line"></view>
+              <view class="decoration-dot"></view>
+              <view class="decoration-line"></view>
+            </view>
+            
+            <!-- 副标题 -->
+            <view class="cover-subtitle-section">
+              <view wx:for="{{item.subtitle}}" wx:key="index" wx:for-item="subtitleLine" class="cover-subtitle-text">
+                {{subtitleLine}}
+              </view>
+            </view>
+            
+            <!-- 开始阅读按钮 -->
+            <view class="cover-button-section">
+              <button class="start-reading-button" bindtap="startReadingFromCover">
+                <view class="button-content">
+                  <view class="button-text">开始阅读</view>
+                  <view class="button-icon">📖</view>
+                </view>
+              </button>
+            </view>
+            
+            <!-- 装饰 -->
+            <view class="cover-decoration">
+              <view class="ink-seal">
+                <view class="seal-text">家</view>
+                <view class="seal-text">传</view>
+              </view>
+            </view>
           </view>
           
-          <!-- 章节内容 -->
-          <view class="chapter-content">
-            <view class="chapter-text ink-text {{useCalligraphyStyle ? 'calligraphy-style' : ''}}">
-              <block wx:for="{{item.paragraphs}}" wx:key="index" wx:for-item="paragraph">
-                <view class="paragraph">{{paragraph}}</view>
-              </block>
+          <!-- 普通章节渲染 -->
+          <view wx:else>
+            <!-- 章节标题 -->
+            <view class="chapter-header">
+              <view class="chapter-number">第 {{item.id}} 章</view>
+              <view class="chapter-title ink-title">{{item.title}}</view>
+              <view class="ink-divider"></view>
+            </view>
+            
+            <!-- 章节内容 -->
+            <view class="chapter-content">
+              <view class="chapter-text ink-text {{useCalligraphyStyle ? 'calligraphy-style' : ''}}">
+                <block wx:for="{{item.paragraphs}}" wx:key="index" wx:for-item="paragraph">
+                  <view class="paragraph">{{paragraph}}</view>
+                </block>
+              </view>
             </view>
           </view>
           
           <!-- 章节分隔 -->
-          <view class="chapter-separator" wx:if="{{index < visibleChapters.length - 1}}">
+          <view class="chapter-separator" wx:if="{{index < visibleChapters.length - 1 && item.type !== 'cover'}}">
             <view class="separator-decoration">
               <view class="separator-dot"></view>
               <view class="separator-dot"></view>
@@ -74,7 +113,8 @@
     
     <!-- 当前章节指示器 -->
     <view class="chapter-indicator" bindtap="showChapterList">
-      <view class="indicator-text">{{currentChapterIndex + 1}}/{{totalChapters}}</view>
+      <view class="indicator-text" wx:if="{{allChapters[currentChapterIndex].type === 'cover'}}">封面</view>
+      <view class="indicator-text" wx:else>{{currentChapterIndex}}/{{totalChapters - 1}}</view>
     </view>
     
     <!-- 下一章按钮 -->
@@ -96,13 +136,14 @@
       </view>
       <scroll-view class="popup-list" scroll-y="{{true}}">
         <view 
-          class="popup-item {{item.id === currentChapterIndex + 1 ? 'active' : ''}}"
+          class="popup-item {{item.id === currentChapterIndex ? 'active' : ''}}"
           wx:for="{{allChapters}}" 
           wx:key="id"
           bindtap="jumpToChapter"
           data-chapter-id="{{item.id}}"
         >
-          <view class="popup-item-number">第{{item.id}}章</view>
+          <view class="popup-item-number" wx:if="{{item.type === 'cover'}}">封面</view>
+          <view class="popup-item-number" wx:else>第{{item.id}}章</view>
           <view class="popup-item-title">{{item.title}}</view>
         </view>
       </scroll-view>

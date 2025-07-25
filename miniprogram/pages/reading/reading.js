@@ -25,7 +25,14 @@ Page({
     // 如果有指定章节ID，跳转到该章节
     if (options.chapterId) {
       const chapterId = parseInt(options.chapterId);
-      this.jumpToChapterById(chapterId);
+      setTimeout(() => {
+        this.jumpToChapterById(chapterId);
+      }, 500); // 延迟确保数据加载完成
+    } else {
+      // 默认显示cover页面
+      this.setData({
+        currentChapterIndex: 0
+      });
     }
   },
 
@@ -39,6 +46,20 @@ Page({
         throw new Error('章节数据为空');
       }
       
+      // 创建cover页面数据
+      const coverData = {
+        id: 0,
+        title: "封面",
+        type: "cover", // 标记为cover类型
+        content: "父親母親一大家", // 主标题
+        subtitle: [
+          "用口述与文字还原父母一生与家族兴衰：",
+          "从清末商旅、土改风云到新中国奋斗。",
+          "支持时间线浏览、亲友补充与留言，",
+          "让记忆被看见、传承可触摸。"
+        ]
+      };
+      
       // 处理章节数据，将content分割成段落
       const processedChapters = chaptersData.map(chapter => {
         const paragraphs = chapter.content.split('\n\n').filter(p => p.trim());
@@ -49,14 +70,17 @@ Page({
         };
       });
       
+      // 将cover数据插入到章节列表的最前面
+      const allChaptersWithCover = [coverData, ...processedChapters];
+      
       this.setData({
-        allChapters: processedChapters,
-        totalChapters: processedChapters.length,
-        visibleChapters: processedChapters, // 直接加载所有章节
+        allChapters: allChaptersWithCover,
+        totalChapters: allChaptersWithCover.length,
+        visibleChapters: allChaptersWithCover, // 直接加载所有章节
         hasMore: false // 已加载完所有章节
       });
       
-      console.log('Chapters loaded:', processedChapters.length);
+      console.log('Chapters loaded with cover:', allChaptersWithCover.length);
     } catch (error) {
       console.error('Failed to load chapters:', error);
       wx.showToast({
@@ -183,9 +207,20 @@ Page({
     wx.vibrateShort({ type: 'light' });
   },
 
-  // 阻止事件冒泡
+  // 停止事件冒泡
   stopPropagation() {
-    // 空函数，用于阻止事件冒泡
+    // 阻止事件冒泡
+  },
+
+  // 从cover页面开始阅读
+  startReadingFromCover() {
+    // 跳转到序言（第1章，id为1）
+    setTimeout(() => {
+      this.jumpToChapterById(1);
+    }, 200);
+    
+    // 触觉反馈
+    wx.vibrateShort({ type: 'light' });
   },
 
   onReady() {
