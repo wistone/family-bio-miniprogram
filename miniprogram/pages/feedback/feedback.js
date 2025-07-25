@@ -15,6 +15,10 @@ Page({
     hasMoreComments: false,
     submitting: false,
     
+    // 身份选择相关
+    identityType: 'custom', // 'custom', 'anonymous'
+    customNickname: '',
+    
     // 分页参数
     pageSize: 20,
     currentPage: 1,
@@ -27,6 +31,8 @@ Page({
     wx.setNavigationBarTitle({
       title: '亲友反馈'
     });
+    
+
     
     // 加载初始数据
     this.loadLikeCount();
@@ -208,6 +214,23 @@ Page({
     this.loadComments(true);
   },
 
+  // 身份类型选择
+  onIdentityTypeChange(event) {
+    const identityType = event.currentTarget.dataset.type;
+    this.setData({ 
+      identityType: identityType 
+    });
+  },
+
+  // 自定义昵称输入
+  onCustomNicknameInput(event) {
+    this.setData({
+      customNickname: event.detail.value
+    });
+  },
+
+
+
   // 评论输入处理
   onCommentInput(event) {
     this.setData({
@@ -227,21 +250,38 @@ Page({
       return;
     }
 
+    // 验证身份信息
+    if (this.data.identityType === 'custom' && !this.data.customNickname.trim()) {
+      wx.showToast({
+        title: '请输入昵称',
+        icon: 'none'
+      });
+      return;
+    }
+
     this.setData({
       submitting: true
     });
 
     try {
-      // 获取用户信息
-      const userInfo = app.globalData.userInfo;
+      // 根据身份类型获取用户信息
+      let nickName = '匿名用户';
+      let avatarUrl = '';
+      
+      if (this.data.identityType === 'custom') {
+        nickName = this.data.customNickname.trim();
+      } else {
+        nickName = '匿名用户';
+      }
+      // 不显示头像，保持avatarUrl为空
       
       const result = await wx.cloud.callFunction({
         name: 'feedback',
         data: {
           action: 'addComment',
           content: content,
-          nickName: userInfo ? userInfo.nickName : '匿名用户',
-          avatarUrl: userInfo ? userInfo.avatarUrl : ''
+          nickName: nickName,
+          avatarUrl: avatarUrl
         }
       });
       
@@ -249,8 +289,8 @@ Page({
         // 创建新评论对象用于立即显示
         const newComment = {
           id: result.result.data.id,
-          nickName: userInfo ? userInfo.nickName : '匿名用户',
-          avatarUrl: userInfo ? userInfo.avatarUrl : '',
+          nickName: nickName,
+          avatarUrl: avatarUrl,
           content: content,
           createTime: '刚刚'
         };

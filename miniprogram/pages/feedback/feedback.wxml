@@ -39,6 +39,44 @@
       show-confirm-bar="{{false}}"
       cursor-spacing="20"
     ></textarea>
+    
+    <!-- 身份选择区域 -->
+    <view class="identity-section">
+      <view class="identity-title">留言身份</view>
+      <view class="identity-options">
+        <view 
+          class="identity-option {{identityType === 'custom' ? 'active' : ''}}"
+          bindtap="onIdentityTypeChange"
+          data-type="custom"
+        >
+          <view class="option-icon">👤</view>
+          <view class="option-text">自定义昵称</view>
+        </view>
+
+        <view 
+          class="identity-option {{identityType === 'anonymous' ? 'active' : ''}}"
+          bindtap="onIdentityTypeChange"
+          data-type="anonymous"
+        >
+          <view class="option-icon">🕶️</view>
+          <view class="option-text">匿名留言</view>
+        </view>
+      </view>
+      
+      <!-- 自定义昵称输入框 -->
+      <view class="custom-nickname-input" wx:if="{{identityType === 'custom'}}">
+        <input 
+          class="nickname-input"
+          placeholder="请输入您的昵称（如：三儿子、小华等）"
+          value="{{customNickname}}"
+          bindinput="onCustomNicknameInput"
+          maxlength="20"
+        />
+      </view>
+      
+
+    </view>
+    
     <view class="input-actions">
       <button 
         class="submit-button ink-button {{commentText.trim().length > 0 ? '' : 'disabled'}}"
@@ -64,12 +102,14 @@
       <block wx:for="{{comments}}" wx:key="id">
         <view class="comment-item content-container">
           <!-- 用户头像 -->
-          <view class="comment-avatar">
+          <view class="comment-avatar {{!item.avatarUrl ? 'comment-avatar-placeholder' : ''}}">
             <image 
+              wx:if="{{item.avatarUrl}}"
               class="avatar-image" 
-              src="{{item.avatarUrl || '/assets/default-avatar.png'}}"
+              src="{{item.avatarUrl}}"
               mode="aspectFill"
             ></image>
+            <text wx:else class="comment-avatar-placeholder-text">👤</text>
           </view>
           
           <!-- 评论内容 -->
