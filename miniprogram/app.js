@@ -74,7 +74,8 @@ App({
     userInfo: null,
     openid: null,
     likeCount: 0,
-    chaptersData: chaptersData
+    chaptersData: chaptersData,
+    shouldJumpToFirstChapter: false
   },
 
   onLaunch() {

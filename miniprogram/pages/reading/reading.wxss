@@ -3,6 +3,7 @@
 /* 阅读页样式 - 水墨风格 */
 .reading-container {
   height: 100vh;
+  width: 100%;
   position: relative;
   background: linear-gradient(135deg, #f8f4e6 0%, #ede4d3 50%, #e6dcc7 100%);
 }
@@ -10,6 +11,7 @@
 /* 内容滚动区域 */
 .content-scroll {
   height: 100vh;
+  width: 100%;
   padding: 0;
   box-sizing: border-box;
 }
@@ -24,10 +26,14 @@
 
 /* 当第一个章节是cover时，移除顶部padding */
 .chapters-container .chapter-item.cover-chapter:first-child {
-  margin-top: -30rpx;
-  margin-left: -30rpx;
-  margin-right: -30rpx;
-  width: calc(100% + 60rpx);
+  margin: 0; /* 清除所有margin */
+  padding: 0; /* 清除所有padding */
+  width: 100vw; /* 占满视口宽度 */
+  position: relative;
+  left: 0; /* 修复定位，确保居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* 章节项目 */
@@ -48,7 +54,7 @@
 /* Cover章节特殊样式覆盖 */
 .chapter-item.cover-chapter {
   margin-bottom: 0;
-  padding: 0;
+  padding: 0; /* 去掉所有padding，让cover-content完全控制布局 */
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -342,10 +348,14 @@
   
   /* 小屏幕下的cover页面处理 */
   .chapters-container .chapter-item.cover-chapter:first-child {
-    margin-top: -30rpx;
-    margin-left: -30rpx;
-    margin-right: -30rpx;
-    width: calc(100% + 60rpx);
+    margin: 0; /* 清除所有margin */
+    padding: 0; /* 清除所有padding */
+    width: 100vw; /* 占满视口宽度 */
+    position: relative;
+    left: 0; /* 修复定位，确保居中 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .chapter-item {
@@ -391,7 +401,7 @@
 /* Cover页面样式 */
 .cover-chapter {
   background: linear-gradient(135deg, #f8f4e6 0%, #ede4d3 50%, #e6dcc7 100%);
-  height: 100vh;
+  min-height: 100vh; /* 最小高度占满视口 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -402,7 +412,14 @@
 
 .cover-content {
   width: 100%;
-  padding: 60rpx 40rpx;
+  min-height: 100vh; /* 占满视口高度 */
+  padding: 80rpx 60rpx; /* 增加padding确保视觉平衡 */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent; /* 去掉白色浮层，与背景融为一体 */
 }
 
 .cover-title {
@@ -447,6 +464,8 @@
   margin-bottom: 16rpx;
   font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "serif";
   opacity: 0.9;
+  text-indent: 0; /* 确保没有首行缩进 */
+  text-align: center; /* 确保文本居中 */
 }
 
 .cover-button-section {
@@ -529,7 +548,7 @@
   }
   
   .cover-content {
-    padding: 40rpx 30rpx;
+    padding: 60rpx 40rpx; /* 小屏幕下稍微减少padding */
   }
   
   .start-reading-button {

@@ -50,7 +50,10 @@ Page({
       type: 'light'
     });
 
-    // 跳转到阅读页面（TabBar页面）
+    // 设置全局标记，告诉reading页面需要跳转到第一章
+    app.globalData.shouldJumpToFirstChapter = true;
+
+    // 跳转到阅读页面
     wx.switchTab({
       url: '/pages/reading/reading',
       success: () => {

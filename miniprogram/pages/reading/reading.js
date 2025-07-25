@@ -53,10 +53,10 @@ Page({
         type: "cover", // 标记为cover类型
         content: "父親母親一大家", // 主标题
         subtitle: [
-          "用口述与文字还原父母一生与家族兴衰：",
-          "从清末商旅、土改风云到新中国奋斗。",
-          "支持时间线浏览、亲友补充与留言，",
-          "让记忆被看见、传承可触摸。"
+          "用口述与文字还原父母一生与家族兴衰",
+          "从清末商旅、土改风云到新中国奋斗",
+          "支持时间线浏览、亲友补充与留言",
+          "让记忆被看见、传承可触摸"
         ]
       };
       
@@ -237,6 +237,14 @@ Page({
       const chapterId = app.globalData.selectedChapterId;
       app.globalData.selectedChapterId = null; // 清除标记
       this.jumpToChapterById(chapterId);
+    }
+    
+    // 检查是否需要跳转到第一章（从cover页面的"开始阅读"按钮过来）
+    if (app.globalData.shouldJumpToFirstChapter) {
+      app.globalData.shouldJumpToFirstChapter = false; // 清除标记
+      setTimeout(() => {
+        this.jumpToChapterById(1); // 跳转到序言（第1章）
+      }, 300);
     }
   },
 

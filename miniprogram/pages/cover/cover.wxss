@@ -59,10 +59,11 @@
 .content-wrapper {
   position: relative;
   z-index: 2;
-  width: 90%;
+  width: 100%;
   max-width: 600rpx;
   text-align: center;
-  padding: 60rpx 40rpx;
+  padding: 60rpx 60rpx;
+  box-sizing: border-box;
 }
 
 /* 标题区域 */
@@ -104,7 +105,7 @@
 /* 副标题区域 */
 .subtitle-section {
   margin-bottom: 100rpx;
-  padding: 0 20rpx;
+  padding: 0; /* 移除左右padding确保完全居中 */
 }
 
 .subtitle-text {
@@ -113,6 +114,8 @@
   color: #5a6c57;
   margin-bottom: 16rpx;
   opacity: 0.9;
+  text-indent: 0; /* 覆盖ink-text的缩进设置 */
+  text-align: center; /* 确保文本居中 */
 }
 
 /* 按钮区域 */
@@ -198,6 +201,10 @@
 
 /* 响应式调整 */
 @media screen and (max-width: 750rpx) {
+  .content-wrapper {
+    padding: 40rpx 40rpx;
+  }
+  
   .main-title {
     font-size: 48rpx;
   }
