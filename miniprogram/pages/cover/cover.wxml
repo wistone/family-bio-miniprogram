@@ -43,13 +43,5 @@
         </view>
       </button>
     </view>
-    
-    <!-- 底部装饰 -->
-    <view class="bottom-decoration">
-      <view class="ink-seal">
-        <view class="seal-text">家</view>
-        <view class="seal-text">传</view>
-      </view>
-    </view>
   </view>
 </view>

@@ -19,6 +19,9 @@ Page({
     identityType: 'custom', // 'custom', 'anonymous'
     customNickname: '',
     
+    // 表单状态
+    canSubmit: false,
+    
     // 分页参数
     pageSize: 20,
     currentPage: 1,
@@ -37,6 +40,9 @@ Page({
     // 加载初始数据
     this.loadLikeCount();
     this.loadComments();
+    
+    // 初始化提交状态
+    this.updateSubmitState();
   },
 
   // 加载点赞数量
@@ -220,12 +226,31 @@ Page({
     this.setData({ 
       identityType: identityType 
     });
+    this.updateSubmitState();
   },
 
   // 自定义昵称输入
   onCustomNicknameInput(event) {
     this.setData({
       customNickname: event.detail.value
+    });
+    this.updateSubmitState();
+  },
+
+  // 检查表单是否可以提交
+  checkCanSubmit() {
+    const hasContent = this.data.commentText.trim().length > 0;
+    const hasValidIdentity = this.data.identityType === 'anonymous' || 
+                            (this.data.identityType === 'custom' && this.data.customNickname.trim().length > 0);
+    
+    return hasContent && hasValidIdentity && !this.data.submitting;
+  },
+
+  // 更新提交状态
+  updateSubmitState() {
+    const canSubmit = this.checkCanSubmit();
+    this.setData({
+      canSubmit: canSubmit
     });
   },
 
@@ -236,6 +261,7 @@ Page({
     this.setData({
       commentText: event.detail.value
     });
+    this.updateSubmitState();
   },
 
   // 提交评论
@@ -262,6 +288,7 @@ Page({
     this.setData({
       submitting: true
     });
+    this.updateSubmitState();
 
     try {
       // 根据身份类型获取用户信息
@@ -304,6 +331,7 @@ Page({
           submitting: false,
           comments: updatedComments
         });
+        this.updateSubmitState();
         
         wx.showToast({
           title: '留言发布成功',
@@ -321,6 +349,7 @@ Page({
       this.setData({
         submitting: false
       });
+      this.updateSubmitState();
       
       wx.showToast({
         title: error.message || '发布失败，请重试',

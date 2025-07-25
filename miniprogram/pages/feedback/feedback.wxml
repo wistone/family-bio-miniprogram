@@ -39,10 +39,14 @@
       show-confirm-bar="{{false}}"
       cursor-spacing="20"
     ></textarea>
-    
-    <!-- 身份选择区域 -->
-    <view class="identity-section">
-      <view class="identity-title">留言身份</view>
+  </view>
+  
+  <!-- 身份选择区域 -->
+  <view class="identity-input-section content-container">
+    <view class="input-header">
+      <view class="input-title">留言身份</view>
+    </view>
+    <view class="identity-content">
       <view class="identity-options">
         <view 
           class="identity-option {{identityType === 'custom' ? 'active' : ''}}"
@@ -52,7 +56,6 @@
           <view class="option-icon">👤</view>
           <view class="option-text">自定义昵称</view>
         </view>
-
         <view 
           class="identity-option {{identityType === 'anonymous' ? 'active' : ''}}"
           bindtap="onIdentityTypeChange"
@@ -73,15 +76,13 @@
           maxlength="20"
         />
       </view>
-      
-
     </view>
     
     <view class="input-actions">
       <button 
-        class="submit-button ink-button {{commentText.trim().length > 0 ? '' : 'disabled'}}"
+        class="submit-button ink-button {{canSubmit ? 'ready' : 'disabled'}}"
         bindtap="submitComment"
-        disabled="{{commentText.trim().length === 0 || submitting}}"
+        disabled="{{!canSubmit}}"
       >
         <view class="button-content">
           <view class="button-text">{{submitting ? '提交中...' : '发布留言'}}</view>
