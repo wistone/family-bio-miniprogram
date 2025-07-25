@@ -212,17 +212,6 @@ Page({
     // 阻止事件冒泡
   },
 
-  // 从cover页面开始阅读
-  startReadingFromCover() {
-    // 跳转到序言（第1章，id为1）
-    setTimeout(() => {
-      this.jumpToChapterById(1);
-    }, 200);
-    
-    // 触觉反馈
-    wx.vibrateShort({ type: 'light' });
-  },
-
   onReady() {
     console.log('Reading page ready');
   },

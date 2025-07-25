@@ -35,24 +35,6 @@
                 {{subtitleLine}}
               </view>
             </view>
-            
-            <!-- 开始阅读按钮 -->
-            <view class="cover-button-section">
-              <button class="start-reading-button" bindtap="startReadingFromCover">
-                <view class="button-content">
-                  <view class="button-text">开始阅读</view>
-                  <view class="button-icon">📖</view>
-                </view>
-              </button>
-            </view>
-            
-            <!-- 装饰 -->
-            <view class="cover-decoration">
-              <view class="ink-seal">
-                <view class="seal-text">家</view>
-                <view class="seal-text">传</view>
-              </view>
-            </view>
           </view>
           
           <!-- 普通章节渲染 -->
