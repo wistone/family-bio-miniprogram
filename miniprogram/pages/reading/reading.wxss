@@ -18,7 +18,7 @@
 
 /* 章节容器 */
 .chapters-container {
-  padding: 30rpx 30rpx 200rpx 30rpx; /* 增加左右和顶部padding */
+  padding: 30rpx 30rpx 80rpx 30rpx; /* 增加左右和顶部padding */
   box-sizing: border-box;
   width: 100%;
   max-width: 100vw;
@@ -49,6 +49,11 @@
   max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* 最后一个章节减少下边距 */
+.chapter-item:last-child {
+  margin-bottom: 20rpx;
 }
 
 /* Cover章节特殊样式覆盖 */
@@ -165,7 +170,7 @@
 /* 结束指示器 */
 .reading-end {
   text-align: center;
-  padding: 80rpx 0;
+  padding: 10rpx 0 100rpx 0; /* 减少顶部padding，从80rpx减少到0rpx */
 }
 
 .end-decoration {
@@ -377,6 +382,11 @@
   
   .paragraph {
     text-indent: 1.5em;
+  }
+  
+  /* 小屏幕下也减少结束指示器的顶部间距 */
+  .reading-end {
+    padding: 0rpx 0 60rpx 0;
   }
   
   .floating-nav {
