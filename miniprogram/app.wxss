@@ -61,5 +61,5 @@ page {
 .ink-divider {
   height: 2rpx;
   background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.3), transparent);
-  margin: 30rpx 0;
+  margin: 20rpx 0; /* 从30rpx减少到20rpx，让分割线更紧凑 */
 }
