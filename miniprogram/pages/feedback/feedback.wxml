@@ -10,7 +10,7 @@
   <view class="like-section content-container">
     <view class="like-content">
       <view class="like-icon-wrapper" bindtap="handleLike">
-        <view class="like-icon {{liked ? 'liked' : ''}}">❤️</view>
+        <view class="like-icon">❤️</view>
         <view class="like-animation {{showLikeAnimation ? 'show' : ''}}">+1</view>
       </view>
       <view class="like-info">

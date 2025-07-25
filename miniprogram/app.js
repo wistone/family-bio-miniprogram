@@ -1,5 +1,8 @@
 // app.js
 
+// 引入配置文件
+const config = require('./config.js');
+
 // 章节数据
 const chaptersData = [
   {
@@ -84,6 +87,7 @@ App({
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
       wx.cloud.init({
+        env: config.cloudEnv, // 从配置文件读取云开发环境ID
         traceUser: true,
       });
     }

@@ -35,5 +35,7 @@
     "ignore": [],
     "include": []
   },
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudbaseRoot": "cloudfunctions/",
   "appid": "wx9f2ad5f8ff861653"
 }
