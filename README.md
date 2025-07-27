@@ -50,7 +50,6 @@ cp miniprogram/config.example.js miniprogram/config.js
 │   ├── config.js         # 配置文件（不提交到git）
 │   └── config.example.js # 配置模板
 ├── cloudfunctions/       # 云函数
-│   ├── login/            # 登录云函数
 │   └── feedback/         # 反馈云函数（点赞相关）
 └── CLOUD_SETUP.md       # 详细的云开发配置说明
 ```

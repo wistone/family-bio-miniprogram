@@ -75,7 +75,6 @@ const chaptersData = [
 App({
   globalData: {
     userInfo: null,
-    openid: null,
     likeCount: 0,
     chaptersData: chaptersData,
     shouldJumpToFirstChapter: false
@@ -92,13 +91,9 @@ App({
       });
     }
 
-
-
     // 获取用户信息
     this.getSetting();
   },
-
-
 
   getSetting() {
     wx.getSetting({
@@ -114,25 +109,6 @@ App({
           });
         }
       }
-    });
-  },
-
-  // 获取openid
-  getOpenId() {
-    return new Promise((resolve, reject) => {
-      if (this.globalData.openid) {
-        resolve(this.globalData.openid);
-        return;
-      }
-      
-      wx.cloud.callFunction({
-        name: 'login',
-        success: res => {
-          this.globalData.openid = res.result.openid;
-          resolve(res.result.openid);
-        },
-        fail: reject
-      });
     });
   }
 });

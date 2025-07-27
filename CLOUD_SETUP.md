@@ -32,10 +32,8 @@
 **注意：** `miniprogram/config.js` 文件已被添加到 `.gitignore` 中，不会被提交到版本控制系统。
 
 ### 3. 部署云函数
-1. 右键点击 `cloudfunctions/login` 文件夹
+1. 右键点击 `cloudfunctions/feedback` 文件夹
 2. 选择"创建并部署：云端安装依赖（不上传 node_modules）"
-3. 右键点击 `cloudfunctions/feedback` 文件夹
-4. 选择"创建并部署：云端安装依赖（不上传 node_modules）"
 
 ### 4. 配置数据库
 在云开发控制台中创建以下集合：
