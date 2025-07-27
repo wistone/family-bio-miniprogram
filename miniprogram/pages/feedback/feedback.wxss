@@ -154,9 +154,10 @@
   right: 0;
   background: #f8f4e6;
   border-radius: 40rpx 40rpx 0 0;
-  padding: 40rpx;
+  padding: 40rpx 30rpx;
   transform: translateY(100%);
   transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .identity-modal.show .modal-content {
@@ -189,17 +190,24 @@
 
 .identity-options {
   margin-bottom: 30rpx;
+  width: 100%;
 }
 
 .identity-option {
   width: 100%;
-  padding: 30rpx 40rpx;
+  padding: 30rpx 20rpx;
   background: rgba(255, 255, 255, 0.6);
   border: 2rpx solid rgba(139, 115, 85, 0.2);
   border-radius: 16rpx;
   margin-bottom: 20rpx;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-sizing: border-box;
+  display: block;
+}
+
+.identity-option:last-child {
+  margin-bottom: 0;
 }
 
 .identity-option.active {
@@ -211,6 +219,7 @@
 .option-icon {
   font-size: 32rpx;
   margin-bottom: 10rpx;
+  text-align: left;
 }
 
 .option-text {
@@ -218,12 +227,14 @@
   color: #2c3e35;
   font-weight: bold;
   margin-bottom: 8rpx;
+  text-align: left;
 }
 
 .option-desc {
   font-size: 24rpx;
   color: #8b7355;
   opacity: 0.8;
+  text-align: left;
 }
 
 .identity-option.active .option-text {
@@ -233,12 +244,14 @@
 /* 自定义昵称输入框 */
 .custom-nickname-input {
   margin-bottom: 30rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .nickname-input {
   width: 100%;
   height: 80rpx;
-  padding: 0 30rpx;
+  padding: 0 20rpx;
   background: rgba(255, 255, 255, 0.8);
   border: 2rpx solid rgba(139, 115, 85, 0.2);
   border-radius: 16rpx;
@@ -254,6 +267,8 @@
 
 .modal-actions {
   margin-top: 20rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .confirm-button {
@@ -270,6 +285,7 @@
     inset 0 1px 3px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   border: none;
+  box-sizing: border-box;
 }
 
 .confirm-button:active {
@@ -385,7 +401,7 @@
   }
   
   .modal-content {
-    padding: 30rpx;
+    padding: 30rpx 20rpx;
   }
   
   .modal-title {
@@ -393,7 +409,7 @@
   }
   
   .identity-option {
-    padding: 25rpx 30rpx;
+    padding: 25rpx 15rpx;
   }
   
   .option-icon {
@@ -411,7 +427,7 @@
   .nickname-input {
     height: 70rpx;
     font-size: 26rpx;
-    padding: 0 25rpx;
+    padding: 0 15rpx;
   }
   
   .confirm-button {
