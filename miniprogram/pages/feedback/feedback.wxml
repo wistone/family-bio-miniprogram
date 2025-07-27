@@ -2,14 +2,14 @@
   <!-- 页面头部 -->
   <view class="feedback-header">
     <view class="header-title ink-title">亲友反馈</view>
-    <view class="header-subtitle">分享您的感想与回忆</view>
+    <view class="header-subtitle">表达您对家族故事的支持</view>
     <view class="ink-divider"></view>
   </view>
   
   <!-- 点赞区域 -->
   <view class="like-section content-container">
     <view class="like-content">
-      <view class="like-icon-wrapper" bindtap="handleLike">
+      <view class="like-icon-wrapper" bindtap="showIdentitySelector">
         <view class="like-icon">❤️</view>
         <view class="like-animation {{showLikeAnimation ? 'show' : ''}}">+1</view>
       </view>
@@ -20,34 +20,29 @@
       </view>
     </view>
     <view class="like-description">
-      如果这个家族故事触动了您的心，请点击爱心表达支持
+      如果这个家族故事触动了您的心，请点击爱心献出支持
     </view>
   </view>
   
-  <!-- 评论输入区域 -->
-  <view class="comment-input-section content-container">
-    <view class="input-header">
-      <view class="input-title">留言分享</view>
-      <view class="input-count">{{commentText.length}}/200</view>
-    </view>
-    <textarea 
-      class="comment-textarea"
-      placeholder="分享您的感想、回忆或补充信息..."
-      maxlength="200"
-      value="{{commentText}}"
-      bindinput="onCommentInput"
-      show-confirm-bar="{{false}}"
-      cursor-spacing="20"
-    ></textarea>
-  </view>
-  
-  <!-- 身份选择区域 -->
-  <view class="identity-input-section content-container">
-    <view class="input-header">
-      <view class="input-title">留言身份</view>
-    </view>
-    <view class="identity-content">
+  <!-- 身份选择弹窗 -->
+  <view class="identity-modal {{showIdentitySelector ? 'show' : ''}}" wx:if="{{showIdentitySelector}}">
+    <view class="modal-overlay" bindtap="hideIdentitySelector"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title">选择点赞身份</view>
+        <view class="modal-close" bindtap="hideIdentitySelector">×</view>
+      </view>
+      
       <view class="identity-options">
+        <view 
+          class="identity-option {{identityType === 'anonymous' ? 'active' : ''}}"
+          bindtap="onIdentityTypeChange"
+          data-type="anonymous"
+        >
+          <view class="option-icon">🕶️</view>
+          <view class="option-text">匿名点赞</view>
+          <view class="option-desc">以匿名身份献出爱心</view>
+        </view>
         <view 
           class="identity-option {{identityType === 'custom' ? 'active' : ''}}"
           bindtap="onIdentityTypeChange"
@@ -55,14 +50,7 @@
         >
           <view class="option-icon">👤</view>
           <view class="option-text">自定义昵称</view>
-        </view>
-        <view 
-          class="identity-option {{identityType === 'anonymous' ? 'active' : ''}}"
-          bindtap="onIdentityTypeChange"
-          data-type="anonymous"
-        >
-          <view class="option-icon">🕶️</view>
-          <view class="option-text">匿名留言</view>
+          <view class="option-desc">以自定义昵称献出爱心</view>
         </view>
       </view>
       
@@ -76,69 +64,49 @@
           maxlength="20"
         />
       </view>
-    </view>
-    
-    <view class="input-actions">
-      <button 
-        class="submit-button ink-button {{canSubmit ? 'ready' : 'disabled'}}"
-        bindtap="submitComment"
-        disabled="{{!canSubmit}}"
-      >
-        <view class="button-content">
-          <view class="button-text">{{submitting ? '提交中...' : '发布留言'}}</view>
-          <view class="button-icon" wx:if="{{!submitting}}">📝</view>
-        </view>
-      </button>
+      
+      <view class="modal-actions">
+        <button 
+          class="confirm-button"
+          bindtap="confirmLike"
+          disabled="{{submitting}}"
+        >
+          {{submitting ? '点赞中...' : '确认点赞'}}
+        </button>
+      </view>
     </view>
   </view>
   
-  <!-- 评论列表 -->
-  <view class="comments-section">
-    <view class="comments-header">
-      <view class="comments-title">亲友留言 ({{comments.length}})</view>
+  <!-- 点赞记录列表 -->
+  <view class="likes-section">
+    <view class="likes-header">
+      <view class="likes-title">最近点赞记录</view>
     </view>
     
-    <!-- 评论列表 -->
-    <view class="comments-list" wx:if="{{comments.length > 0}}">
-      <block wx:for="{{comments}}" wx:key="id">
-        <view class="comment-item content-container">
-          <!-- 用户头像 -->
-          <view class="comment-avatar {{!item.avatarUrl ? 'comment-avatar-placeholder' : ''}}">
-            <image 
-              wx:if="{{item.avatarUrl}}"
-              class="avatar-image" 
-              src="{{item.avatarUrl}}"
-              mode="aspectFill"
-            ></image>
-            <text wx:else class="comment-avatar-placeholder-text">👤</text>
+    <!-- 点赞记录列表 - 紧凑横排形式 -->
+    <view class="likes-list" wx:if="{{likes.length > 0}}">
+      <view class="likes-container content-container">
+        <block wx:for="{{likes}}" wx:key="id">
+          <view class="like-record">
+            <text class="like-record-text">
+              <text class="nickname">{{item.nickName || '匿名用户'}}</text>
+              <text class="action">献出了爱心</text>
+              <text class="time">{{item.createTime}}</text>
+            </text>
           </view>
-          
-          <!-- 评论内容 -->
-          <view class="comment-content">
-            <view class="comment-header">
-              <view class="comment-nickname">{{item.nickName || '匿名用户'}}</view>
-              <view class="comment-time">{{item.createTime}}</view>
-            </view>
-            <view class="comment-text">{{item.content}}</view>
-          </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
     
     <!-- 空状态 -->
-    <view class="empty-comments" wx:if="{{comments.length === 0 && !loadingComments}}">
-      <view class="empty-icon">💭</view>
-      <view class="empty-text">暂无留言，快来分享您的感想吧</view>
+    <view class="empty-likes" wx:if="{{likes.length === 0 && !loadingLikes}}">
+      <view class="empty-icon">💝</view>
+      <view class="empty-text">还没有人点赞，快来第一个献出爱心吧</view>
     </view>
     
     <!-- 加载状态 -->
-    <view class="loading-comments" wx:if="{{loadingComments}}">
-      <view class="loading-text">正在加载留言...</view>
-    </view>
-    
-    <!-- 加载更多 -->
-    <view class="load-more" wx:if="{{hasMoreComments && comments.length > 0}}" bindtap="loadMoreComments">
-      <view class="load-more-text">加载更多留言</view>
+    <view class="loading-likes" wx:if="{{loadingLikes}}">
+      <view class="loading-text">正在加载点赞记录...</view>
     </view>
   </view>
 </view>

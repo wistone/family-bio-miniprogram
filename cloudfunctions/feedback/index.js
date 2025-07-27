@@ -21,7 +21,9 @@ exports.main = async (event, context) => {
       case 'getLikeCount':
         return await getLikeCount()
       case 'addLike':
-        return await addLike(openid)
+        return await addLike(event, openid)
+      case 'getLikes':
+        return await getLikes(event)
       default:
         throw new Error('未知操作')
     }
@@ -118,13 +120,17 @@ async function getLikeCount() {
   }
 }
 
-// 添加点赞
-async function addLike(openid) {
+// 添加点赞（支持身份信息）
+async function addLike(event, openid) {
+  const { nickName = '匿名用户', identityType = 'anonymous' } = event
+  
   try {
-    // 直接添加点赞记录，不检查重复
+    // 添加点赞记录，包含身份信息
     await db.collection('likes').add({
       data: {
         openid,
+        nickName: nickName.trim() || '匿名用户',
+        identityType,
         createTime: new Date()
       }
     })
@@ -142,5 +148,36 @@ async function addLike(openid) {
   } catch (error) {
     console.error('点赞失败:', error)
     throw new Error('点赞失败')
+  }
+}
+
+// 获取点赞记录列表
+async function getLikes(event) {
+  const { page = 1, pageSize = 10 } = event
+  const skip = (page - 1) * pageSize
+  
+  try {
+    const { data } = await db.collection('likes')
+      .orderBy('createTime', 'desc')
+      .skip(skip)
+      .limit(pageSize)
+      .get()
+    
+    // 获取总数量
+    const countResult = await db.collection('likes').count()
+    const total = countResult.total
+    const hasMore = skip + pageSize < total
+    
+    return {
+      success: true,
+      data: {
+        likes: data,
+        hasMore,
+        total
+      }
+    }
+  } catch (error) {
+    console.error('获取点赞记录失败:', error)
+    throw new Error('获取点赞记录失败')
   }
 }

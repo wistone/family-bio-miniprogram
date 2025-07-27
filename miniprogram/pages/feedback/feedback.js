@@ -8,22 +8,20 @@ Page({
     showLikeAnimation: false,
     loadingLikeCount: true, // 加载状态
     
-    // 评论相关
-    commentText: '',
-    comments: [],
-    loadingComments: false,
-    hasMoreComments: false,
-    submitting: false,
+    // 点赞记录相关
+    likes: [],
+    loadingLikes: false,
     
     // 身份选择相关
-    identityType: 'custom', // 'custom', 'anonymous'
+    identityType: 'anonymous', // 'custom', 'anonymous'
     customNickname: '',
+    showIdentitySelector: false, // 控制身份选择区域显示
     
-    // 表单状态
-    canSubmit: false,
+    // 提交状态
+    submitting: false,
     
     // 分页参数
-    pageSize: 20,
+    pageSize: 10, // 改为10条记录
     currentPage: 1,
   },
 
@@ -35,14 +33,9 @@ Page({
       title: '亲友反馈'
     });
     
-
-    
     // 加载初始数据
     this.loadLikeCount();
-    this.loadComments();
-    
-    // 初始化提交状态
-    this.updateSubmitState();
+    this.loadLikes();
   },
 
   // 加载点赞数量
@@ -82,6 +75,59 @@ Page({
     }
   },
 
+  // 显示身份选择器
+  showIdentitySelector() {
+    this.setData({
+      showIdentitySelector: true
+    });
+  },
+
+  // 隐藏身份选择器
+  hideIdentitySelector() {
+    this.setData({
+      showIdentitySelector: false
+    });
+  },
+
+  // 身份类型选择
+  onIdentityTypeChange(event) {
+    const identityType = event.currentTarget.dataset.type;
+    this.setData({ 
+      identityType: identityType 
+    });
+  },
+
+  // 自定义昵称输入
+  onCustomNicknameInput(event) {
+    this.setData({
+      customNickname: event.detail.value
+    });
+  },
+
+  // 检查身份信息是否有效
+  checkValidIdentity() {
+    return this.data.identityType === 'anonymous' || 
+           (this.data.identityType === 'custom' && this.data.customNickname.trim().length > 0);
+  },
+
+  // 确认点赞
+  async confirmLike() {
+    // 验证身份信息
+    if (this.data.identityType === 'custom' && !this.data.customNickname.trim()) {
+      wx.showToast({
+        title: '请输入昵称',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 隐藏身份选择器
+    this.hideIdentitySelector();
+
+    // 执行点赞
+    await this.handleLike();
+  },
+
   // 处理点赞
   async handleLike() {
     // 先更新UI，提供即时反馈
@@ -89,7 +135,8 @@ Page({
     const newLikeCount = this.data.likeCount + 1;
     this.setData({
       likeCount: newLikeCount,
-      showLikeAnimation: true
+      showLikeAnimation: true,
+      submitting: true
     });
 
     // 触觉反馈
@@ -103,21 +150,52 @@ Page({
     }, 600);
 
     try {
+      // 根据身份类型获取昵称
+      let nickName = '匿名用户';
+      if (this.data.identityType === 'custom') {
+        nickName = this.data.customNickname.trim();
+      }
+
       const result = await wx.cloud.callFunction({
         name: 'feedback',
-        data: { action: 'addLike' }
+        data: { 
+          action: 'addLike',
+          nickName: nickName,
+          identityType: this.data.identityType
+        }
       });
       
       if (result.result.success) {
         // 使用服务器返回的真实数量
         this.setData({
-          likeCount: result.result.data.likeCount
+          likeCount: result.result.data.likeCount,
+          submitting: false
         });
         
         wx.showToast({
           title: '点赞成功',
-          icon: 'success'
+          icon: 'success',
+          duration: 1500
         });
+
+        // 立即添加新的点赞记录到列表顶部，无需等待服务器
+        const newLike = {
+          id: 'temp_' + Date.now(),
+          nickName: nickName,
+          identityType: this.data.identityType,
+          createTime: '刚刚'
+        };
+        
+        // 将新记录插入到列表开头，并保持最多10条
+        const updatedLikes = [newLike, ...this.data.likes].slice(0, 10);
+        this.setData({
+          likes: updatedLikes
+        });
+
+        // 异步刷新数据确保数据同步
+        setTimeout(() => {
+          this.loadLikes();
+        }, 1000);
       } else {
         throw new Error(result.result.error);
       }
@@ -125,7 +203,8 @@ Page({
       console.error('Failed to handle like:', error);
       // 恢复原状态
       this.setData({
-        likeCount: originalLikeCount
+        likeCount: originalLikeCount,
+        submitting: false
       });
       
       wx.showToast({
@@ -135,234 +214,75 @@ Page({
     }
   },
 
-  // 加载评论
-  async loadComments(loadMore = false) {
-    if (this.data.loadingComments) return;
+  // 加载点赞记录（仅获取最近10条）
+  async loadLikes() {
+    if (this.data.loadingLikes) return;
     
     this.setData({
-      loadingComments: true
+      loadingLikes: true
     });
-
-    const page = loadMore ? this.data.currentPage + 1 : 1;
 
     try {
       const result = await wx.cloud.callFunction({
         name: 'feedback',
         data: { 
-          action: 'getComments',
-          page: page,
+          action: 'getLikes',
+          page: 1,
           pageSize: this.data.pageSize
         }
       });
       
       if (result.result.success) {
-        const { comments, hasMore } = result.result.data;
+        const { likes } = result.result.data;
         
         // 格式化时间显示
-        const formattedComments = comments.map(comment => ({
-          ...comment,
-          id: comment._id,
-          createTime: this.formatTime(comment.createTime)
+        const formattedLikes = likes.map(like => ({
+          ...like,
+          id: like._id,
+          createTime: this.formatTime(like.createTime)
         }));
         
         this.setData({
-          comments: loadMore ? [...this.data.comments, ...formattedComments] : formattedComments,
-          hasMoreComments: hasMore,
-          currentPage: page,
-          loadingComments: false
+          likes: formattedLikes,
+          loadingLikes: false
         });
       } else {
         throw new Error(result.result.error);
       }
       
     } catch (error) {
-      console.error('Failed to load comments:', error);
+      console.error('Failed to load likes:', error);
       this.setData({
-        loadingComments: false
+        loadingLikes: false
       });
       
-      // 如果是首次加载失败，显示示例数据
-      if (!loadMore && this.data.comments.length === 0) {
-        const mockComments = [
+      // 如果首次加载失败，显示示例数据
+      if (this.data.likes.length === 0) {
+        const mockLikes = [
           {
             id: 'demo1',
             nickName: '家族后人',
-            avatarUrl: '',
-            content: '看到这个家族故事很感动，我们应该更多地记录和传承这些珍贵的回忆。',
             createTime: '刚刚'
           },
           {
             id: 'demo2',
-            nickName: '读者',
-            avatarUrl: '',
-            content: '父母的坚韧和奋斗精神值得我们学习，这种家族传记很有意义。',
+            nickName: '匿名用户',
             createTime: '5分钟前'
           }
         ];
         
         this.setData({
-          comments: mockComments,
-          hasMoreComments: false
+          likes: mockLikes
         });
       }
-      
-      if (loadMore) {
-        wx.showToast({
-          title: '加载失败，请重试',
-          icon: 'none'
-        });
-      }
-    }
-  },
-
-  // 加载更多评论
-  loadMoreComments() {
-    this.loadComments(true);
-  },
-
-  // 身份类型选择
-  onIdentityTypeChange(event) {
-    const identityType = event.currentTarget.dataset.type;
-    this.setData({ 
-      identityType: identityType 
-    });
-    this.updateSubmitState();
-  },
-
-  // 自定义昵称输入
-  onCustomNicknameInput(event) {
-    this.setData({
-      customNickname: event.detail.value
-    });
-    this.updateSubmitState();
-  },
-
-  // 检查表单是否可以提交
-  checkCanSubmit() {
-    const hasContent = this.data.commentText.trim().length > 0;
-    const hasValidIdentity = this.data.identityType === 'anonymous' || 
-                            (this.data.identityType === 'custom' && this.data.customNickname.trim().length > 0);
-    
-    return hasContent && hasValidIdentity && !this.data.submitting;
-  },
-
-  // 更新提交状态
-  updateSubmitState() {
-    const canSubmit = this.checkCanSubmit();
-    this.setData({
-      canSubmit: canSubmit
-    });
-  },
-
-
-
-  // 评论输入处理
-  onCommentInput(event) {
-    this.setData({
-      commentText: event.detail.value
-    });
-    this.updateSubmitState();
-  },
-
-  // 提交评论
-  async submitComment() {
-    const content = this.data.commentText.trim();
-    
-    if (!content) {
-      wx.showToast({
-        title: '请输入留言内容',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 验证身份信息
-    if (this.data.identityType === 'custom' && !this.data.customNickname.trim()) {
-      wx.showToast({
-        title: '请输入昵称',
-        icon: 'none'
-      });
-      return;
-    }
-
-    this.setData({
-      submitting: true
-    });
-    this.updateSubmitState();
-
-    try {
-      // 根据身份类型获取用户信息
-      let nickName = '匿名用户';
-      let avatarUrl = '';
-      
-      if (this.data.identityType === 'custom') {
-        nickName = this.data.customNickname.trim();
-      } else {
-        nickName = '匿名用户';
-      }
-      // 不显示头像，保持avatarUrl为空
-      
-      const result = await wx.cloud.callFunction({
-        name: 'feedback',
-        data: {
-          action: 'addComment',
-          content: content,
-          nickName: nickName,
-          avatarUrl: avatarUrl
-        }
-      });
-      
-      if (result.result.success) {
-        // 创建新评论对象用于立即显示
-        const newComment = {
-          id: result.result.data.id,
-          nickName: nickName,
-          avatarUrl: avatarUrl,
-          content: content,
-          createTime: '刚刚'
-        };
-        
-        // 将新评论插入到评论列表开头
-        const updatedComments = [newComment, ...this.data.comments];
-        
-        // 成功提交，清空输入框并更新评论列表
-        this.setData({
-          commentText: '',
-          submitting: false,
-          comments: updatedComments
-        });
-        this.updateSubmitState();
-        
-        wx.showToast({
-          title: '留言发布成功',
-          icon: 'success'
-        });
-        
-        // 触觉反馈
-        wx.vibrateShort({ type: 'light' });
-      } else {
-        throw new Error(result.result.error);
-      }
-      
-    } catch (error) {
-      console.error('Failed to submit comment:', error);
-      this.setData({
-        submitting: false
-      });
-      this.updateSubmitState();
-      
-      wx.showToast({
-        title: error.message || '发布失败，请重试',
-        icon: 'none'
-      });
     }
   },
 
   // 格式化时间显示
   formatTime(createTime) {
     const now = new Date();
-    const commentTime = new Date(createTime);
-    const diff = now - commentTime;
+    const likeTime = new Date(createTime);
+    const diff = now - likeTime;
     
     const minutes = Math.floor(diff / (1000 * 60));
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -378,9 +298,9 @@ Page({
       return `${days}天前`;
     } else {
       // 超过7天显示具体日期
-      const year = commentTime.getFullYear();
-      const month = String(commentTime.getMonth() + 1).padStart(2, '0');
-      const day = String(commentTime.getDate()).padStart(2, '0');
+      const year = likeTime.getFullYear();
+      const month = String(likeTime.getMonth() + 1).padStart(2, '0');
+      const day = String(likeTime.getDate()).padStart(2, '0');
       
       if (year === now.getFullYear()) {
         return `${month}-${day}`;
@@ -414,7 +334,7 @@ Page({
     
     // 重新加载数据
     this.loadLikeCount();
-    this.loadComments();
+    this.loadLikes();
     
     // 停止下拉刷新
     wx.stopPullDownRefresh();
@@ -422,11 +342,7 @@ Page({
 
   onReachBottom() {
     console.log('Feedback page reach bottom');
-    
-    // 加载更多评论
-    if (this.data.hasMoreComments) {
-      this.loadMoreComments();
-    }
+    // 不再需要加载更多，因为只显示最近10条记录
   },
 
   onShareAppMessage() {

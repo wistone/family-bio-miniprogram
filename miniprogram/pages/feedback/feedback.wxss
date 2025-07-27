@@ -25,7 +25,7 @@
   font-size: 28rpx;
   color: #8b7355;
   opacity: 0.8;
-  margin-bottom: 30rpx; /* 从40rpx减少到30rpx，让分割线区域更紧凑 */
+  margin-bottom: 30rpx;
 }
 
 /* 点赞区域 */
@@ -120,84 +120,86 @@
   line-height: 1.5;
 }
 
-/* 评论输入区域 */
-.comment-input-section {
-  margin-bottom: 20rpx;
-  padding: 40rpx;
-  border-radius: 20rpx;
+/* 身份选择弹窗 */
+.identity-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
-.input-header {
+.identity-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f8f4e6;
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 40rpx;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.identity-modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20rpx;
+  margin-bottom: 40rpx;
 }
 
-.input-title {
+.modal-title {
   font-size: 32rpx;
   font-weight: bold;
   color: #2c3e35;
 }
 
-.input-count {
-  font-size: 24rpx;
+.modal-close {
+  font-size: 48rpx;
   color: #8b7355;
-  opacity: 0.7;
-}
-
-.comment-textarea {
-  width: 100%;
-  min-height: 200rpx;
-  padding: 30rpx;
-  background: rgba(248, 244, 230, 0.5);
-  border: 2rpx solid rgba(139, 115, 85, 0.2);
-  border-radius: 16rpx;
-  font-size: 28rpx;
-  line-height: 1.6;
-  color: #2c3e35;
-  box-sizing: border-box;
-}
-
-.comment-textarea::placeholder {
-  color: #8b7355;
-  opacity: 0.5;
-}
-
-/* 身份选择区域 */
-.identity-input-section {
-  margin-bottom: 40rpx;
-  padding: 40rpx;
-  border-radius: 20rpx;
-}
-
-.identity-content {
-  background: rgba(248, 244, 230, 0.3);
-  border-radius: 14rpx;
-  border: 1rpx solid rgba(139, 115, 85, 0.15);
-  padding: 24rpx 30rpx;
-}
-
-.identity-options {
-  display: flex;
-  gap: 30rpx;
-  margin-bottom: 20rpx;
-  justify-content: center; /* 两个选项居中显示 */
-}
-
-.identity-option {
-  min-width: 160rpx;
-  padding: 16rpx 24rpx;
-  background: rgba(255, 255, 255, 0.6);
-  border: 2rpx solid rgba(139, 115, 85, 0.2);
-  border-radius: 10rpx;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  width: 60rpx;
+  height: 60rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10rpx;
+  cursor: pointer;
+}
+
+.identity-options {
+  margin-bottom: 30rpx;
+}
+
+.identity-option {
+  width: 100%;
+  padding: 30rpx 40rpx;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2rpx solid rgba(139, 115, 85, 0.2);
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .identity-option.active {
@@ -207,34 +209,39 @@
 }
 
 .option-icon {
-  font-size: 28rpx;
-  line-height: 1;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
 }
 
 .option-text {
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: #2c3e35;
-  line-height: 1;
-  white-space: nowrap;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.option-desc {
+  font-size: 24rpx;
+  color: #8b7355;
+  opacity: 0.8;
 }
 
 .identity-option.active .option-text {
   color: #8b7355;
-  font-weight: bold;
 }
 
 /* 自定义昵称输入框 */
 .custom-nickname-input {
-  margin-top: 20rpx;
+  margin-bottom: 30rpx;
 }
 
 .nickname-input {
   width: 100%;
-  height: 76rpx;
-  padding: 0 20rpx;
+  height: 80rpx;
+  padding: 0 30rpx;
   background: rgba(255, 255, 255, 0.8);
   border: 2rpx solid rgba(139, 115, 85, 0.2);
-  border-radius: 10rpx;
+  border-radius: 16rpx;
   font-size: 28rpx;
   color: #2c3e35;
   box-sizing: border-box;
@@ -245,231 +252,122 @@
   opacity: 0.5;
 }
 
-
-
-.input-actions {
-  margin-top: 30rpx;
-  display: flex;
-  justify-content: flex-end;
+.modal-actions {
+  margin-top: 20rpx;
 }
 
-.submit-button {
-  width: 200rpx;
-  height: 70rpx;
-  border-radius: 35rpx;
-  font-size: 28rpx;
+.confirm-button {
+  width: 100%;
+  height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-weight: bold;
   background: linear-gradient(145deg, #c0a16b, #8b7355);
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 
     0 4px 15px rgba(139, 115, 85, 0.3),
     inset 0 1px 3px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  border: none;
 }
 
-.submit-button:not(.disabled):active {
+.confirm-button:active {
   transform: translateY(2px);
   box-shadow: 
     0 2px 8px rgba(139, 115, 85, 0.3),
     inset 0 1px 3px rgba(255, 255, 255, 0.2);
 }
 
-.submit-button.disabled {
-  background: linear-gradient(145deg, #d0d0d0, #a0a0a0) !important;
-  color: #666 !important;
+.confirm-button:disabled {
+  background: linear-gradient(145deg, #d0d0d0, #a0a0a0);
+  color: #666;
   box-shadow: 
     0 2px 8px rgba(160, 160, 160, 0.2),
-    inset 0 1px 3px rgba(255, 255, 255, 0.1) !important;
-  cursor: not-allowed;
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
 }
 
-.submit-button.ready {
-  background: linear-gradient(145deg, #4caf50, #388e3c) !important;
-  box-shadow: 
-    0 6px 20px rgba(76, 175, 80, 0.4),
-    inset 0 1px 3px rgba(255, 255, 255, 0.3) !important;
-  animation: readyPulse 2s ease-in-out infinite;
-}
-
-@keyframes readyPulse {
-  0%, 100% { 
-    box-shadow: 
-      0 6px 20px rgba(76, 175, 80, 0.4),
-      inset 0 1px 3px rgba(255, 255, 255, 0.3);
-  }
-  50% { 
-    box-shadow: 
-      0 8px 25px rgba(76, 175, 80, 0.6),
-      inset 0 1px 3px rgba(255, 255, 255, 0.3);
-  }
-}
-
-.submit-button::after {
-  border: none;
-}
-
-.button-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.button-text {
-  color: white;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  margin-right: 8rpx;
-}
-
-.submit-button.disabled .button-text {
-  color: #666 !important;
-  text-shadow: none !important;
-}
-
-.submit-button.ready .button-text {
-  color: white !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4) !important;
-  font-weight: bold !important;
-}
-
-.button-icon {
-  font-size: 28rpx;
-}
-
-/* 评论区域 */
-.comments-section {
+/* 点赞记录区域 */
+.likes-section {
   margin-top: 20rpx;
 }
 
-.comments-header {
-  padding: 20rpx 10rpx 30rpx;
+.likes-header {
+  padding: 20rpx 10rpx 20rpx;
 }
 
-.comments-title {
+.likes-title {
   font-size: 32rpx;
   font-weight: bold;
   color: #2c3e35;
 }
 
-/* 评论列表 */
-.comments-list {
-  /* 评论列表样式 */
-}
-
-.comment-item {
-  display: flex;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
+/* 点赞记录列表 - 紧凑横排 */
+.likes-container {
+  padding: 20rpx 30rpx;
   border-radius: 16rpx;
 }
 
-.comment-avatar {
-  width: 80rpx;
-  height: 80rpx;
-  margin-right: 24rpx;
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.like-record {
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid rgba(139, 115, 85, 0.1);
 }
 
-.comment-avatar .avatar-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+.like-record:last-child {
+  border-bottom: none;
 }
 
-.comment-avatar-placeholder {
-  background: rgba(139, 115, 85, 0.1);
-  border: 1rpx solid rgba(139, 115, 85, 0.2);
-}
-
-.comment-avatar-placeholder-text {
-  font-size: 32rpx;
-  color: #8b7355;
-}
-
-.comment-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.comment-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16rpx;
-}
-
-.comment-nickname {
-  font-size: 28rpx;
-  font-weight: bold;
+.like-record-text {
+  font-size: 26rpx;
+  line-height: 1.4;
   color: #2c3e35;
-  margin-right: 20rpx;
 }
 
-.comment-time {
-  font-size: 24rpx;
+.nickname {
+  font-weight: bold;
+  color: #8b7355;
+  margin-right: 8rpx;
+}
+
+.action {
+  color: #2c3e35;
+  margin-right: 8rpx;
+}
+
+.time {
   color: #8b7355;
   opacity: 0.7;
-}
-
-.comment-text {
-  font-size: 28rpx;
-  line-height: 1.6;
-  color: #2c3e35;
-  word-wrap: break-word;
+  font-size: 24rpx;
 }
 
 /* 空状态 */
-.empty-comments {
+.empty-likes {
   text-align: center;
-  padding: 100rpx 40rpx;
+  padding: 80rpx 40rpx;
 }
 
 .empty-icon {
-  font-size: 80rpx;
+  font-size: 60rpx;
   opacity: 0.3;
-  margin-bottom: 30rpx;
+  margin-bottom: 20rpx;
 }
 
 .empty-text {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #8b7355;
   opacity: 0.7;
 }
 
 /* 加载状态 */
-.loading-comments {
+.loading-likes {
   text-align: center;
   padding: 60rpx 40rpx;
 }
 
 .loading-text {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #8b7355;
   opacity: 0.7;
-}
-
-/* 加载更多 */
-.load-more {
-  text-align: center;
-  padding: 40rpx;
-  margin-top: 20rpx;
-}
-
-.load-more-text {
-  font-size: 28rpx;
-  color: #c0a16b;
-  padding: 20rpx 40rpx;
-  border: 2rpx solid rgba(192, 161, 107, 0.3);
-  border-radius: 40rpx;
-  background: rgba(192, 161, 107, 0.1);
-  transition: all 0.3s ease;
-}
-
-.load-more:active .load-more-text {
-  background: rgba(192, 161, 107, 0.2);
 }
 
 /* 响应式调整 */
@@ -486,42 +384,50 @@
     font-size: 42rpx;
   }
   
-  .comment-textarea {
-    min-height: 180rpx;
-    font-size: 26rpx;
+  .modal-content {
+    padding: 30rpx;
   }
   
-  .identity-input-section {
-    padding: 25rpx 15rpx;
-  }
-  
-  .identity-content {
-    padding: 20rpx;
-  }
-  
-  .identity-options {
-    gap: 24rpx;
+  .modal-title {
+    font-size: 30rpx;
   }
   
   .identity-option {
-    min-width: 140rpx;
-    padding: 14rpx 20rpx;
-    gap: 8rpx;
+    padding: 25rpx 30rpx;
   }
   
   .option-icon {
-    font-size: 26rpx;
+    font-size: 30rpx;
   }
   
   .option-text {
-    font-size: 24rpx;
+    font-size: 26rpx;
+  }
+  
+  .option-desc {
+    font-size: 22rpx;
   }
   
   .nickname-input {
     height: 70rpx;
     font-size: 26rpx;
-    padding: 0 18rpx;
+    padding: 0 25rpx;
   }
   
-
+  .confirm-button {
+    height: 70rpx;
+    font-size: 30rpx;
+  }
+  
+  .likes-container {
+    padding: 15rpx 20rpx;
+  }
+  
+  .like-record-text {
+    font-size: 24rpx;
+  }
+  
+  .time {
+    font-size: 22rpx;
+  }
 }
