@@ -1,12 +1,12 @@
 {
-  "name": "miniprogram-ts-quickstart",
-  "version": "1.0.0",
-  "description": "",
+  "name": "family-bio-miniprogram",
+  "version": "1.2.0",
+  "description": "家族故事阅读器微信小程序 - 支持故事阅读和点赞功能",
   "scripts": {
   },
-  "keywords": [],
+  "keywords": ["miniprogram", "family", "biography", "wechat"],
   "author": "",
-  "license": "",
+  "license": "MIT",
   "dependencies": {
   },
   "devDependencies": {
