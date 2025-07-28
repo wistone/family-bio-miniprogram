@@ -115,38 +115,81 @@ class LeanCloudAPI {
     }
   }
 
-  // 获取点赞记录列表
+  // 获取点赞记录列表（优化显示策略：优先显示有昵称的记录）
   async getLikes(page = 1, pageSize = 10) {
     try {
-      const skip = (page - 1) * pageSize;
-      const queryParams = {
+      // 第一步：获取有自定义昵称的记录（identityType = 'custom'）
+      const customQueryParams = {
+        where: JSON.stringify({ identityType: 'custom' }),
         order: '-createdAt',
-        skip: skip.toString(),
         limit: pageSize.toString(),
         count: '1'
       };
-
-      const queryString = this.buildQueryString(queryParams);
-      const result = await this.request('GET', `/classes/likes?${queryString}`);
       
-      // 转换数据格式以匹配原来的格式
-      const likes = (result.results || []).map(item => ({
+      const customQueryString = this.buildQueryString(customQueryParams);
+      const customResult = await this.request('GET', `/classes/likes?${customQueryString}`);
+      
+      const customLikes = (customResult.results || []).map(item => ({
         _id: item.objectId,
         openid: item.openid,
         nickName: item.nickName,
         identityType: item.identityType,
-        createTime: item.createdAt // LeanCloud使用createdAt而不是createTime
+        createTime: item.createdAt,
+        priority: 1 // 标记为高优先级
       }));
 
-      const total = result.count || 0;
-      const hasMore = skip + pageSize < total;
+      let allLikes = [...customLikes];
+      const totalCustomCount = customResult.count || 0;
+      
+      // 第二步：如果自定义昵称记录不够pageSize条，补充匿名记录
+      if (customLikes.length < pageSize) {
+        const remainingCount = pageSize - customLikes.length;
+        
+        const anonymousQueryParams = {
+          where: JSON.stringify({ identityType: 'anonymous' }),
+          order: '-createdAt',
+          limit: remainingCount.toString(),
+          count: '1'
+        };
+        
+        const anonymousQueryString = this.buildQueryString(anonymousQueryParams);
+        const anonymousResult = await this.request('GET', `/classes/likes?${anonymousQueryString}`);
+        
+        const anonymousLikes = (anonymousResult.results || []).map(item => ({
+          _id: item.objectId,
+          openid: item.openid,
+          nickName: item.nickName || '匿名用户',
+          identityType: item.identityType,
+          createTime: item.createdAt,
+          priority: 2 // 标记为低优先级
+        }));
+        
+        allLikes = [...customLikes, ...anonymousLikes];
+      }
+      
+      // 第三步：统一按时间降序排序（最新的在前）
+      allLikes.sort((a, b) => {
+        return new Date(b.createTime) - new Date(a.createTime);
+      });
+      
+      // 移除优先级标记
+      const finalLikes = allLikes.map(item => {
+        const { priority, ...like } = item;
+        return like;
+      });
+
+      // 获取总记录数（用于分页）
+      const totalCountResult = await this.request('GET', '/classes/likes?count=1&limit=0');
+      const total = totalCountResult.count || 0;
+      const hasMore = page * pageSize < total;
 
       return {
         success: true,
         data: {
-          likes: likes,
+          likes: finalLikes.slice(0, pageSize), // 确保不超过pageSize
           hasMore: hasMore,
-          total: total
+          total: total,
+          customCount: totalCustomCount // 返回自定义昵称记录数量，用于调试
         }
       };
     } catch (error) {

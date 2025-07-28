@@ -81,6 +81,7 @@
   <view class="likes-section">
     <view class="likes-header">
       <view class="likes-title">最近点赞记录</view>
+      <view class="likes-subtitle">优先显示有昵称的亲友</view>
     </view>
     
     <!-- 点赞记录列表 - 紧凑横排形式 -->

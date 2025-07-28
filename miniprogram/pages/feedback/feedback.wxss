@@ -316,6 +316,13 @@
   font-size: 32rpx;
   font-weight: bold;
   color: #2c3e35;
+  margin-bottom: 8rpx;
+}
+
+.likes-subtitle {
+  font-size: 22rpx;
+  color: #8b7355;
+  opacity: 0.8;
 }
 
 /* 点赞记录列表 - 紧凑横排 */

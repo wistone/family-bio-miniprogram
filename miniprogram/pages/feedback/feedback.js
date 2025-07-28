@@ -276,7 +276,10 @@ Page({
       const result = await leanCloudAPI.getLikes(1, this.data.pageSize);
       
       if (result.success) {
-        const { likes } = result.data;
+        const { likes, customCount } = result.data;
+        
+        // 调试信息：显示记录分布
+        console.log(`📊 点赞记录: 总共 ${likes.length} 条，其中有昵称 ${customCount} 条`);
         
         // 格式化时间显示
         const formattedLikes = likes.map(like => ({
