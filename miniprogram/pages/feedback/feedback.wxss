@@ -9,7 +9,7 @@
 /* 页面头部 */
 .feedback-header {
   text-align: center;
-  padding: 40rpx 20rpx 0rpx;
+  padding: 40rpx 20rpx 5rpx;
 }
 
 .header-title {
