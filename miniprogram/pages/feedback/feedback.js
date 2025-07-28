@@ -273,7 +273,7 @@ Page({
     });
 
     try {
-      const result = await leanCloudAPI.getLikes(1, this.data.pageSize);
+      const result = await leanCloudAPI.getLikes(1, this.data.pageSize, this.userIdentifier);
       
       if (result.success) {
         const { likes, customCount } = result.data;

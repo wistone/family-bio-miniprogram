@@ -115,10 +115,38 @@ class LeanCloudAPI {
     }
   }
 
-  // 获取点赞记录列表（优化显示策略：优先显示有昵称的记录）
-  async getLikes(page = 1, pageSize = 10) {
+  // 获取点赞记录列表（优化显示策略：优先显示有昵称的记录，确保当前用户匿名记录可见）
+  async getLikes(page = 1, pageSize = 10, currentUserIdentifier = null) {
     try {
-      // 第一步：获取有自定义昵称的记录（identityType = 'custom'）
+      let currentUserAnonymousLikes = [];
+      
+      // 第一步：获取当前用户的所有匿名点赞记录
+      if (currentUserIdentifier) {
+        const currentUserQueryParams = {
+          where: JSON.stringify({ 
+            openid: currentUserIdentifier, 
+            identityType: 'anonymous' 
+          }),
+          order: '-createdAt',
+          limit: pageSize.toString() // 获取足够多的记录，确保不遗漏
+        };
+        
+        const currentUserQueryString = this.buildQueryString(currentUserQueryParams);
+        const currentUserResult = await this.request('GET', `/classes/likes?${currentUserQueryString}`);
+        
+        if (currentUserResult.results && currentUserResult.results.length > 0) {
+          currentUserAnonymousLikes = currentUserResult.results.map(item => ({
+            _id: item.objectId,
+            openid: item.openid,
+            nickName: item.nickName || '匿名用户',
+            identityType: item.identityType,
+            createTime: item.createdAt,
+            isCurrentUser: true // 标记为当前用户
+          }));
+        }
+      }
+      
+      // 第二步：获取有自定义昵称的记录（identityType = 'custom'）
       const customQueryParams = {
         where: JSON.stringify({ identityType: 'custom' }),
         order: '-createdAt',
@@ -138,18 +166,36 @@ class LeanCloudAPI {
         priority: 1 // 标记为高优先级
       }));
 
-      let allLikes = [...customLikes];
+      let allLikes = [];
       const totalCustomCount = customResult.count || 0;
       
-      // 第二步：如果自定义昵称记录不够pageSize条，补充匿名记录
-      if (customLikes.length < pageSize) {
-        const remainingCount = pageSize - customLikes.length;
+      // 第三步：组合记录，优先包含当前用户的所有匿名记录
+      if (currentUserAnonymousLikes.length > 0) {
+        allLikes = [...currentUserAnonymousLikes];
+        
+        // 如果当前用户匿名记录 + 自定义昵称记录超过pageSize，截取自定义记录
+        const availableSlots = pageSize - currentUserAnonymousLikes.length;
+        if (availableSlots > 0) {
+          allLikes = [...allLikes, ...customLikes.slice(0, availableSlots)];
+        }
+      } else {
+        allLikes = [...customLikes];
+      }
+      
+      // 第四步：如果记录不够pageSize条，补充其他匿名记录
+      if (allLikes.length < pageSize) {
+        const remainingCount = pageSize - allLikes.length;
+        
+        // 构建排除条件：排除当前用户的所有匿名记录（如果存在）
+        let whereCondition = { identityType: 'anonymous' };
+        if (currentUserIdentifier && currentUserAnonymousLikes.length > 0) {
+          whereCondition.openid = { $ne: currentUserIdentifier };
+        }
         
         const anonymousQueryParams = {
-          where: JSON.stringify({ identityType: 'anonymous' }),
+          where: JSON.stringify(whereCondition),
           order: '-createdAt',
-          limit: remainingCount.toString(),
-          count: '1'
+          limit: remainingCount.toString()
         };
         
         const anonymousQueryString = this.buildQueryString(anonymousQueryParams);
@@ -164,17 +210,17 @@ class LeanCloudAPI {
           priority: 2 // 标记为低优先级
         }));
         
-        allLikes = [...customLikes, ...anonymousLikes];
+        allLikes = [...allLikes, ...anonymousLikes];
       }
       
-      // 第三步：统一按时间降序排序（最新的在前）
+      // 第五步：统一按时间降序排序（最新的在前）
       allLikes.sort((a, b) => {
         return new Date(b.createTime) - new Date(a.createTime);
       });
       
-      // 移除优先级标记
+      // 移除内部标记，保持接口一致性
       const finalLikes = allLikes.map(item => {
-        const { priority, ...like } = item;
+        const { priority, isCurrentUser, ...like } = item;
         return like;
       });
 
