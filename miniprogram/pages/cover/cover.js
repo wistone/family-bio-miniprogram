@@ -7,7 +7,7 @@ Page({
 
   onLoad(options) {
     // 页面加载时执行
-    console.log('Cover page loaded');
+    // console.log('Cover page loaded');
     
     // 设置导航栏样式
     wx.setNavigationBarTitle({
@@ -30,7 +30,7 @@ Page({
       // 数据已经在app.js中预加载，直接使用
       const chaptersData = app.globalData.chaptersData;
       if (chaptersData && chaptersData.length > 0) {
-        console.log('Chapters data preloaded:', chaptersData.length + ' chapters');
+        // console.log('Chapters data preloaded:', chaptersData.length + ' chapters');
       } else {
         throw new Error('章节数据为空');
       }
@@ -57,7 +57,7 @@ Page({
     wx.switchTab({
       url: '/pages/reading/reading',
       success: () => {
-        console.log('Navigate to reading page');
+        // console.log('Navigate to reading page');
       },
       fail: (error) => {
         console.error('Failed to navigate to reading page:', error);

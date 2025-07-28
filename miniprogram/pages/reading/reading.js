@@ -17,7 +17,7 @@ Page({
   },
 
   onLoad(options) {
-    console.log('Reading page loaded with options:', options);
+    // console.log('Reading page loaded with options:', options);
     
     // 加载章节数据
     this.loadChapterData();
@@ -63,7 +63,7 @@ Page({
       // 处理章节数据，将content分割成段落
       const processedChapters = chaptersData.map(chapter => {
         const paragraphs = chapter.content.split('\n\n').filter(p => p.trim());
-        console.log(`Chapter ${chapter.id} paragraphs:`, paragraphs.length);
+        // console.log(`Chapter ${chapter.id} paragraphs:`, paragraphs.length);
         return {
           ...chapter,
           paragraphs: paragraphs
@@ -80,7 +80,7 @@ Page({
         hasMore: false // 已加载完所有章节
       });
       
-      console.log('Chapters loaded with cover:', allChaptersWithCover.length);
+      // console.log('Chapters loaded with cover:', allChaptersWithCover.length);
     } catch (error) {
       console.error('Failed to load chapters:', error);
       wx.showToast({
@@ -213,7 +213,7 @@ Page({
   },
 
   onReady() {
-    console.log('Reading page ready');
+    // console.log('Reading page ready');
   },
 
   onShow() {
@@ -247,7 +247,7 @@ Page({
 
 
   onUnload() {
-    console.log('Reading page unload');
+    // console.log('Reading page unload');
   },
 
   onPullDownRefresh() {

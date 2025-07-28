@@ -28,7 +28,7 @@ Page({
   },
 
   onLoad(options) {
-    console.log('Feedback page loaded');
+    // console.log('Feedback page loaded');
     
     // 设置导航栏标题
     wx.setNavigationBarTitle({
@@ -61,7 +61,7 @@ Page({
       }
       
       this.userIdentifier = userIdentifier;
-      console.log('用户标识:', userIdentifier);
+      // console.log('用户标识:', userIdentifier);
     } catch (error) {
       console.error('初始化用户标识失败:', error);
       // 使用临时标识
@@ -279,7 +279,7 @@ Page({
         const { likes, customCount } = result.data;
         
         // 调试信息：显示记录分布
-        console.log(`📊 点赞记录: 总共 ${likes.length} 条，其中有昵称 ${customCount} 条`);
+        // console.log(`📊 点赞记录: 总共 ${likes.length} 条，其中有昵称 ${customCount} 条`);
         
         // 格式化时间显示
         const formattedLikes = likes.map(like => ({
@@ -342,26 +342,26 @@ Page({
   },
 
   onReady() {
-    console.log('Feedback page ready');
+    // console.log('Feedback page ready');
   },
 
   onShow() {
-    console.log('Feedback page show');
+    // console.log('Feedback page show');
     
     // 确保tabBar显示
     wx.showTabBar();
   },
 
   onHide() {
-    console.log('Feedback page hide');
+    // console.log('Feedback page hide');
   },
 
   onUnload() {
-    console.log('Feedback page unload');
+    // console.log('Feedback page unload');
   },
 
   onPullDownRefresh() {
-    console.log('Feedback page pull down refresh');
+    // console.log('Feedback page pull down refresh');
     
     // 重新加载数据
     this.loadLikeCount();
@@ -372,7 +372,7 @@ Page({
   },
 
   onReachBottom() {
-    console.log('Feedback page reach bottom');
+    // console.log('Feedback page reach bottom');
     // 不再需要加载更多，因为只显示最近10条记录
   },
 

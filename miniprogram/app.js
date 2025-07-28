@@ -81,7 +81,7 @@ App({
   },
 
   onLaunch() {
-    console.log('小程序启动');
+    // console.log('小程序启动');
     
     // 获取用户信息
     this.getSetting();
